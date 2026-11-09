@@ -4,7 +4,7 @@
 
 ## Запуск
 
-Откройте `index.html` локально или опубликуйте как статический сайт. Изображения находятся в `assets/`.
+Откройте `index.html` локально или опубликуйте как статический сайт. Фотографии обложки и блюд лежат в корне репозитория.
 
 Исходная книга меню: [Google Docs](https://docs.google.com/document/d/1brnrde3rNVIUT6kxHXx_zEGTDvTQ0zEyNRZIvsrwSPQ/edit).
 
