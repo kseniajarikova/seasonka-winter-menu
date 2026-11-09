@@ -26,7 +26,8 @@
   function renderIntro(){
     const w=current(),days=w.days.length,total=w.days.reduce((a,d)=>a+d.meals.length,0);
     const art=state.week===1?'cod.jpg':state.week===2?'chicken.jpg':'cover.jpg';
-    $('#weekIntro').innerHTML=`<div><h2>${weekNames[state.week]}</h2><p>${days} дней · ${total} блюд · список покупок на ${state.people} ${state.people===1?'человека':'человек'}</p></div><div class="week-visual"><img src="${art}" alt="Иллюстрация к меню недели"><span class="week-tag">домашняя кухня + корейские акценты</span></div>`;
+    const mealWord=total%10===1&&total%100!==11?'блюдо':total%10>=2&&total%10<=4&&!(total%100>=12&&total%100<=14)?'блюда':'блюд';
+    $('#weekIntro').innerHTML=`<div><h2>${weekNames[state.week]}</h2><p>${days} дней · ${total} ${mealWord} · список покупок на ${state.people} ${state.people===1?'человека':'человек'}</p></div><div class="week-visual"><img src="${art}" alt="Иллюстрация к меню недели"><span class="week-tag">домашняя кухня + корейские акценты</span></div>`;
     $('#recipeCount').textContent=total;
     const baseCount=w.groceries.reduce((a,g)=>a+g.items.length,0),choice=currentChoice();
     const picked=Object.keys(choice.recipes).filter(k=>choice.recipes[k]).length+Object.keys(choice.ingredients).filter(k=>choice.ingredients[k]).length;
