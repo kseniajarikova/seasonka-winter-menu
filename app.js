@@ -8,6 +8,8 @@
   const peopleSelect=$('#peopleSelect');
   const fractions={'½':.5,'¼':.25,'¾':.75,'⅓':1/3,'⅔':2/3};
   const choiceKey=week=>`seasonka-choice-${week}`;
+  const peopleWord=n=>n===1?'человека':n>=2&&n<=4?'человека':'человек';
+  function splitIngredient(text){return String(text).split(/;\s*/).flatMap(part=>part.split(/,\s+(?=[\p{L}][^,;]{0,55}(?:—\s*\d|\d+(?:[.,]\d+)?\s*(?:г|мл|кг|шт\.?|ст\.?\s*л|ч\.?\s*л)))/u)).map(x=>x.trim()).filter(Boolean)}
   const checkedKey=(week,people)=>`seasonka-week-${week}-people-${people}`;
   const selectionKey=(week,people)=>`seasonka-selected-${week}-people-${people}`;
   function scaleText(text,people){
@@ -27,7 +29,7 @@
     const w=current(),days=w.days.length,total=w.days.reduce((a,d)=>a+d.meals.length,0);
     const art=state.week===1?'cod.jpg':state.week===2?'chicken.jpg':'cover.jpg';
     const mealWord=total%10===1&&total%100!==11?'блюдо':total%10>=2&&total%10<=4&&!(total%100>=12&&total%100<=14)?'блюда':'блюд';
-    $('#weekIntro').innerHTML=`<div><h2>${weekNames[state.week]}</h2><p>${days} дней · ${total} ${mealWord} · список покупок на ${state.people} ${state.people===1?'человека':'человек'}</p></div><div class="week-visual"><img src="${art}" alt="Иллюстрация к меню недели"><span class="week-tag">домашняя кухня + корейские акценты</span></div>`;
+    $('#weekIntro').innerHTML=`<div><h2>${weekNames[state.week]}</h2><p>${days} дней · ${total} ${mealWord} · список покупок на ${state.people} ${peopleWord(state.people)}</p></div><div class="week-visual"><img src="${art}" alt="Иллюстрация к меню недели"><span class="week-tag">домашняя кухня + корейские акценты</span></div>`;
     $('#recipeCount').textContent=total;
     const baseCount=w.groceries.reduce((a,g)=>a+g.items.length,0),choice=currentChoice();
     const picked=Object.keys(choice.recipes).filter(k=>choice.recipes[k]).length+Object.keys(choice.ingredients).filter(k=>choice.ingredients[k]).length;
@@ -45,14 +47,16 @@
       const cards=d.meals.map((m,mi)=>{
         if(q&&!m.title.toLowerCase().includes(q)&&!m.ingredients.join(' ').toLowerCase().includes(q))return '';
         const recipeId=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[recipeId],servings=m.portionBase*state.people;
-        const ingredients=m.ingredients.map((item,ii)=>{
-          const id=ingredientId(di,mi,ii),checked=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];
-          return `<label class="recipe-ingredient ${checked?'is-selected':''}"><input type="checkbox" data-ingredient="${id}" ${checked?'checked':''}><span>${esc(scaleText(item,state.people))}</span></label>`
-        }).join('');
-        return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron">⌄</span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Добавлено в покупки':'＋ Добавить рецепт в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${m.slot==='Ужин'?'порции (ужин + обед)':'порц.'}</span><span>база × ${state.people}</span><span>${esc(m.time)}</span></div><div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`:''}</div></div></div></details>`
+        const ingredients=m.ingredients.flatMap((item,ii)=>splitIngredient(item).map((part,si)=>{
+          const id=`${ingredientId(di,mi,ii)}-${si}`,checked=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];
+          return `<label class="recipe-ingredient ${checked?'is-selected':''}"><input type="checkbox" data-ingredient="${id}" ${checked?'checked':''}><span>${esc(scaleText(part,state.people))}</span></label>`
+        })).join('');
+        const source=m.source?`<p class="recipe-origin">Эта порция — из <a href="#recipe-${m.source.week}-${m.source.day}-${m.source.meal}" data-source-id="${m.source.week}-${m.source.day}-${m.source.meal}" data-source-week="${m.source.week}">${esc(m.source.label)}</a>. Если готовой порции нет, открой источник и приготовь по нему одну порцию; готовые веса смотри в списке ингредиентов.</p>`:'';
+        return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron">⌄</span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Добавлено в покупки':'＋ Добавить рецепт в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${m.slot==='Ужин'?'порции (ужин + обед)':'порц.'}</span><span>база × ${state.people}</span><span>${esc(m.time)}</span></div>${source}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`:''}</div></div></div></details>`
       }).join('');
       return cards?`<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>`:''
     }).join('')||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>';
+    $$('[data-source-id]').forEach(a=>a.onclick=e=>{e.preventDefault();state.week=+a.dataset.sourceWeek;state.query='';document.querySelector('#recipeSearch').value='';state.view='recipes';render();setTimeout(()=>{const el=$('#recipe-'+a.dataset.sourceId);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}},50)});
     $$('[data-recipe]').forEach(button=>button.onclick=()=>{
       const choice=currentChoice(),id=button.dataset.recipe;
       if(choice.recipes[id])delete choice.recipes[id];else choice.recipes[id]=true;
@@ -70,7 +74,7 @@
     })
   }
   function normalizeName(text){
-    let name=String(text).split(/[—–]/)[0].toLowerCase().replace(/\([^)]*\)/g,' ').replace(/[0-9.,½¼¾⅓⅔]+/g,' ').replace(/[^\p{L}\s-]/gu,' ').replace(/\s+/g,' ').trim();
+    let name=String(text).split(/[—–]/)[0].toLowerCase().replace(/\([^)]*\)/g,' ').replace(/\b(?:готов\w*|отварн\w*|запеч\w*|обжаренн\w*|приготовленн\w*)\b/gu,' ').replace(/[0-9.,½¼¾⅓⅔]+/g,' ').replace(/[^\p{L}\s-]/gu,' ').replace(/\s+/g,' ').trim();
     const aliases=[[/курин(ое|ая|ый)\s+(филе|грудка)/,'курица'],[/филе\s+курин(ое|ой)/,'курица'],[/яйца?/,'яйцо'],[/огурц(ы|а)/,'огурец'],[/томаты?/,'томат'],[/шампиньоны?/,'шампиньон'],[/грецкие\s+орехи?/,'грецкий орех'],[/масло\s+оливковое/,'оливковое масло']];
     for(const [pattern,replacement] of aliases)name=name.replace(pattern,replacement);
     return name
@@ -79,7 +83,7 @@
     const choice=currentChoice(),out=[];
     current().days.forEach((day,di)=>day.meals.forEach((meal,mi)=>{
       const rid=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[rid];
-      meal.ingredients.forEach((item,ii)=>{const id=ingredientId(di,mi,ii),selected=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];if(selected)out.push({id,item,recipe:meal.title,day:day.name,name:normalizeName(item)})})
+      meal.ingredients.forEach((item,ii)=>splitIngredient(item).forEach((part,si)=>{const id=`${ingredientId(di,mi,ii)}-${si}`,selected=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];if(selected)out.push({id,item:part,recipe:meal.title,day:day.name,name:normalizeName(part)})}))
     }));
     return out
   }
@@ -89,7 +93,7 @@
   }
   function renderGroceries(){
     const w=current(),key=checkedKey(state.week,state.people),checked=loadJSON(key,{}),selected=selectedIngredients(),selectionChecks=loadJSON(selectionKey(state.week,state.people),{});
-    $('#listSummary').innerHTML=`<strong>Список на ${state.people} ${state.people===1?'человека':'человек'}</strong><span>количества × ${state.people} от базового плана · <button class="quiet-button" id="clearChecks">Снять отметки</button></span>`;
+    $('#listSummary').innerHTML=`<strong>Список на ${state.people} ${peopleWord(state.people)}</strong><span>количества × ${state.people} от базового плана · <button class="quiet-button" id="clearChecks">Снять отметки</button></span>`;
     $('#clearChecks').onclick=()=>{localStorage.removeItem(key);localStorage.removeItem(selectionKey(state.week,state.people));renderGroceries()};
     $('#selectedShopping').innerHTML=selected.length?`<div class="selected-shopping-head"><div><p class="eyebrow">ТВОЙ ВЫБОР</p><h3>Ингредиенты выбранных рецептов <span>${selected.length}</span></h3></div><button class="quiet-button" id="clearSelection">Очистить выбор</button></div><p class="selected-note">Эти продукты добавлены сюда автоматически. Совпадения также подсвечены в общем списке ниже.</p><div class="selected-items">${selected.map(item=>`<label class="selected-item ${selectionChecks[item.id]?'checked':''}"><input type="checkbox" data-selected-check="${item.id}" ${selectionChecks[item.id]?'checked':''}><span><strong>${esc(scaleText(item.item,state.people))}</strong><small>${esc(item.day)} · ${esc(item.recipe)}</small></span></label>`).join('')}</div>`:'';
     const clearSelection=$('#clearSelection');if(clearSelection)clearSelection.onclick=()=>{localStorage.removeItem(choiceKey(state.week));localStorage.removeItem(selectionKey(state.week,state.people));renderRecipes();renderGroceries();renderIntro()};
