@@ -51,3 +51,9 @@
 .recipe-origin{margin:12px 0 16px;padding:11px 13px;border-left:3px solid var(--rust);border-radius:0 9px 9px 0;background:#f7f4eb;color:#68736a;font-size:12px}.recipe-origin a{color:var(--olive);font-weight:700;text-decoration:underline;text-underline-offset:2px}
 .recipe-ingredient span{overflow-wrap:anywhere}
 @media(max-width:760px){.recipe-origin{font-size:11px}.recipe-ingredient{padding:8px 7px}}
+@media(max-width:760px){
+  .meal-link{display:grid;grid-template-columns:76px minmax(0,1fr);align-items:start;gap:8px;font-size:12px;line-height:1.4}
+  .menu-table td:not(:first-child) .meal-link small{display:block;min-width:0;margin:0;color:var(--rust);font-size:9px;letter-spacing:.06em}
+  .menu-table td:not(:first-child) .meal-link{min-height:0;padding:4px 0}
+  .week-visual .week-tag{display:none}
+}
