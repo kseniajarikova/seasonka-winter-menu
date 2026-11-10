@@ -45,3 +45,9 @@
 .prep-ingredient{padding:5px 8px;margin:3px 0!important;background:white;border-radius:6px}
 #shopping .shopping-main::before{content:none}
 @media(max-width:760px){#prep .prep-intro{display:grid;gap:3px}#prep .prep-blocks>.prep-block{padding:0 12px}#prep .prep-blocks>.prep-block>summary{font-size:13px}}
+
+/* Читабельная карточка дня на телефоне: каждый приём пищи идёт отдельной строкой. */
+@media(max-width:760px){.menu-table tr{grid-template-columns:1fr}.menu-table td:nth-child(4){grid-column:auto}.menu-table td:not(:first-child){border-top:1px solid #eceee7;padding:9px 12px}.menu-table td:not(:first-child) .meal-link{margin:0;padding:3px 0;border-left:0}.menu-table td:not(:first-child) .meal-link small{display:inline-block;min-width:76px;margin:0 8px 0 0;color:var(--rust);font-weight:700}.menu-table td:first-child{font-size:17px}.menu-table td:nth-child(4) .meal-link{min-height:0}}
+.recipe-origin{margin:12px 0 16px;padding:11px 13px;border-left:3px solid var(--rust);border-radius:0 9px 9px 0;background:#f7f4eb;color:#68736a;font-size:12px}.recipe-origin a{color:var(--olive);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.recipe-ingredient span{overflow-wrap:anywhere}
+@media(max-width:760px){.recipe-origin{font-size:11px}.recipe-ingredient{padding:8px 7px}}
