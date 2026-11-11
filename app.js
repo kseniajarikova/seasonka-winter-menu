@@ -17,10 +17,10 @@
     if(people===1)return text;
     const numeric=raw=>{const [n,d='1']=raw.replace(',','.').split('/');const value=fractions[raw]??Number(n)/Number(d);return String(Math.round(value*people*10)/10).replace('.',',')};
     const counted=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(\s+)(?:(готов\p{L}*)\s+)?(бан\p{L}*|штук\p{L}*|яйц\p{L}*|котлет\p{L}*|порци\p{L}*|зубчик\p{L}*)/giu;
-    const nounForms={банка:['банка','банки','банок'],яйцо:['яйцо','яйца','яиц'],котлета:['котлета','котлеты','котлет'],порция:['порция','порции','порций'],зубчик:['зубчик','зубчика','зубчиков'],штука:['штука','штуки','штук']};
+    const nounForms={банка:['банка','банки','банок'],яйцо:['яйцо','яйца','яиц'],котлета:['котлета','котлеты','котлет'],порция:['порция','порции','порций'],зубчик:['зубчик','зубчика','зубчиков'],упаковка:['упаковка','упаковки','упаковок'],штука:['штука','штуки','штук']};
     const pluralized=String(text).replace(counted,(whole,raw,space,adjective,unit)=>{
       const value=Math.round((fractions[raw]??Number(raw.replace(',','.').split('/')[0])/Number(raw.includes('/')?raw.split('/')[1]:1))*people*10)/10;
-      const lower=unit.toLowerCase(),key=lower.startsWith('бан')?'банка':lower.startsWith('яйц')?'яйцо':lower.startsWith('котлет')?'котлета':lower.startsWith('порци')?'порция':lower.startsWith('зубчик')?'зубчик':lower.startsWith('штук')?'штука':lower;
+      const lower=unit.toLowerCase(),key=lower.startsWith('бан')?'банка':lower.startsWith('яйц')?'яйцо':lower.startsWith('котлет')?'котлета':lower.startsWith('порци')?'порция':lower.startsWith('зубчик')?'зубчик':lower.startsWith('упак')?'упаковка':lower.startsWith('штук')?'штука':lower;
       const forms=nounForms[key];if(!forms)return `${numeric(raw)}${space}${adjective?adjective+' ':''}${unit}`;
       const integer=Math.round(value),last2=integer%100,last=integer%10,index=!Number.isInteger(value)||last2>=11&&last2<=14?2:last===1?0:last>=2&&last<=4?1:2;
       const adj=adjective?((index===0?'готовая':index===1?'готовые':'готовых')+' '):'';
