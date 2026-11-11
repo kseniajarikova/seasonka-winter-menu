@@ -76,7 +76,7 @@
 }
 @media(max-width:360px){.recipe-card>summary{grid-template-columns:58px minmax(0,1fr) 20px;gap:4px 7px;}.recipe-card>summary>.slot{font-size:8px;}.recipe-body{padding-left:65px;}}
 
-.day-nutrition{margin:-7px 0 12px;color:#68736a;font-size:12px;line-height:1.4}.day-nutrition::before{content:'≈';color:var(--rust);font-weight:700;margin-right:5px}
+
 
 /* Mobile menu: keep each meal label aligned with its recipe title. */
 @media(max-width:760px){
