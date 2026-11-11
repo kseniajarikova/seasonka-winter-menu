@@ -77,3 +77,17 @@
 @media(max-width:360px){.recipe-card>summary{grid-template-columns:58px minmax(0,1fr) 20px;gap:4px 7px;}.recipe-card>summary>.slot{font-size:8px;}.recipe-body{padding-left:65px;}}
 
 .day-nutrition{margin:-7px 0 12px;color:#68736a;font-size:12px;line-height:1.4}.day-nutrition::before{content:'≈';color:var(--rust);font-weight:700;margin-right:5px}
+
+/* Mobile menu: keep each meal label aligned with its recipe title. */
+@media(max-width:760px){
+  .menu-wrap{overflow:visible;border:0;background:transparent;box-shadow:none}
+  .menu-table,.menu-table tbody{display:block;width:100%;min-width:0}
+  .menu-table thead{display:none}
+  .menu-table tr{display:grid;grid-template-columns:1fr;background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}
+  .menu-table td{display:block;width:100%!important;padding:10px 13px;border-bottom:1px solid #eceee7}
+  .menu-table td:first-child{font-size:17px;padding:12px 14px;background:#f8f8f3;border-bottom:1px solid var(--line)}
+  .menu-table td:last-child{border-bottom:0}
+  .menu-table .meal-link{display:grid;grid-template-columns:68px minmax(0,1fr);gap:8px;align-items:start;margin:0;padding:2px 0;border:0;font-size:12px;line-height:1.45}
+  .menu-table .meal-link small{margin:1px 0 0;font-size:8px}
+  .menu-table .meal-link:hover{transform:none}
+}
