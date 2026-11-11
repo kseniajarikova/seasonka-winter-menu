@@ -15,8 +15,19 @@
   const selectionKey=(week,people)=>`seasonka-selected-${week}-people-${people}`;
   function scaleText(text,people){
     if(people===1)return text;
-    const quantity=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(?=\s*(?:(?:мл|кг|г|л|см|бан)(?![\p{L}\p{N}])|шт\.?|ст\.?\s*л|ч\.?\s*л|порци|зубчик|пуч|веточ|кусоч|упак))/gu;
-    return text.replace(quantity,raw=>{const [n,d='1']=raw.replace(',','.').split('/');const value=fractions[raw]??Number(n)/Number(d);return String(Math.round(value*people*10)/10).replace('.',',')})
+    const numeric=raw=>{const [n,d='1']=raw.replace(',','.').split('/');const value=fractions[raw]??Number(n)/Number(d);return String(Math.round(value*people*10)/10).replace('.',',')};
+    const counted=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(\s+)(?:(готов\p{L}*)\s+)?(бан\p{L}*|штук\p{L}*|яйц\p{L}*|котлет\p{L}*|порци\p{L}*|зубчик\p{L}*)/giu;
+    const nounForms={банка:['банка','банки','банок'],яйцо:['яйцо','яйца','яиц'],котлета:['котлета','котлеты','котлет'],порция:['порция','порции','порций'],зубчик:['зубчик','зубчика','зубчиков'],штука:['штука','штуки','штук']};
+    const pluralized=String(text).replace(counted,(whole,raw,space,adjective,unit)=>{
+      const value=Math.round((fractions[raw]??Number(raw.replace(',','.').split('/')[0])/Number(raw.includes('/')?raw.split('/')[1]:1))*people*10)/10;
+      const lower=unit.toLowerCase(),key=lower.startsWith('бан')?'банка':lower.startsWith('яйц')?'яйцо':lower.startsWith('котлет')?'котлета':lower.startsWith('порци')?'порция':lower.startsWith('зубчик')?'зубчик':lower.startsWith('штук')?'штука':lower;
+      const forms=nounForms[key];if(!forms)return `${numeric(raw)}${space}${adjective?adjective+' ':''}${unit}`;
+      const integer=Math.round(value),last2=integer%100,last=integer%10,index=!Number.isInteger(value)||last2>=11&&last2<=14?2:last===1?0:last>=2&&last<=4?1:2;
+      const adj=adjective?((index===0?'готовая':index===1?'готовые':'готовых')+' '):'';
+      return `${String(value).replace('.',',')}${space}${adj}${forms[index]}`;
+    });
+    const quantity=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(?=\s*(?:(?:мл|кг|г|л|см)(?![\p{L}\p{N}])|шт\.?|ст\.?\s*л|ч\.?\s*л|порци\p{L}*|зубчик\p{L}*|пуч\p{L}*|веточ\p{L}*|кусоч\p{L}*|упак\p{L}*))/gu;
+    return pluralized.replace(quantity,(raw,index,whole)=>/\bпо\s*$/.test(whole.slice(Math.max(0,index-3),index))?raw:numeric(raw))
   }
   function loadJSON(key,fallback={}){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch{return fallback}}
   function saveChoice(choice){localStorage.setItem(choiceKey(state.week),JSON.stringify(choice))}
@@ -54,7 +65,7 @@
         })).join('');
         const source=m.source?`<p class="recipe-origin">Эта порция — из <a href="#recipe-${m.source.week}-${m.source.day}-${m.source.meal}" data-source-id="${m.source.week}-${m.source.day}-${m.source.meal}" data-source-week="${m.source.week}">${esc(m.source.label)}</a>. Если готовой порции нет, открой источник и приготовь по нему одну порцию; готовые веса смотри в списке ингредиентов.</p>`:'';
         const prepSource=m.prepSource?'<p class="recipe-origin">'+esc(m.prepSource.label)+' — <a href="#'+esc(m.prepSource.id)+'" data-prep-source="'+esc(m.prepSource.id)+'">открыть шаг заготовки</a>.</p>':'';
-        return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${plural(servings,'порция','порции','порций')}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`:''}</div></div></div></details>`
+        return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${plural(servings,'порция','порции','порций')}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(scaleText(x,state.people))}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(scaleText(x,state.people))}</p>`).join('')}</div>`:''}</div></div></div></details>`
       }).join('');
       return cards?`<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>`:''
     }).join('')||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>';
@@ -117,7 +128,7 @@
         const text=x.text.replace(/^•\s*/,'');
         const step=text.match(/^(\d+)\.\s*(.*)$/s);
         const id=x.id?` id="${esc(x.id)}"`:'';
-        content.push(step?`<div class="prep-step"${id}><span>${step[1]}</span><p>${esc(step[2])}</p></div>`:text.startsWith('•')?`<p class="prep-ingredient"${id}>${esc(text.slice(1).trim())}</p>`:`<p${id}>${esc(text)}</p>`);
+        content.push(step?`<div class="prep-step"${id}><span>${step[1]}</span><p>${esc(scaleText(step[2],state.people))}</p></div>`:text.startsWith('•')?`<p class="prep-ingredient"${id}>${esc(scaleText(text.slice(1).trim(),state.people))}</p>`:`<p${id}>${esc(scaleText(text,state.people))}</p>`);
       });
       flush();
       return `<details class="prep-block" ${i===0?'open':''}><summary>${esc(b.title)}</summary><div class="prep-lines">${groups.join('')}</div></details>`;
