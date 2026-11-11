@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const data=window.MENU_BOOK;
+  const data=window.MENU_DATA;
   const state={week:1,people:1,view:'menu',query:'',expanded:false};
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
