@@ -27,7 +27,7 @@
       return `${String(value).replace('.',',')}${space}${adj}${forms[index]}`;
     });
     const quantity=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(?=\s*(?:(?:мл|кг|г|л|см)(?![\p{L}\p{N}])|шт\.?|ст\.?\s*л|ч\.?\s*л|пуч\p{L}*|веточ\p{L}*|кусоч\p{L}*|упак\p{L}*))/gu;
-    return pluralized.replace(quantity,(match,raw,index,whole)=>/\bпо\s*$/.test(whole.slice(Math.max(0,index-3),index))?match:numeric(raw))
+    return pluralized.replace(quantity,(match,raw,index,whole)=>/\b(?:бан\p{L}*|упак\p{L}*)\s+по\s*$/iu.test(whole.slice(Math.max(0,index-20),index))?match:numeric(raw))
   }
   function loadJSON(key,fallback={}){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch{return fallback}}
   function saveChoice(choice){localStorage.setItem(choiceKey(state.week),JSON.stringify(choice))}
