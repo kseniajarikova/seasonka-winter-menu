@@ -2177,7 +2177,7 @@ window.MENU_DATA = {
             }
           ],
           "nutrition": {
-            "kcal": 2050,
+            "kcal": 2020,
             "protein": 148,
             "fat": 50,
             "carbs": 244,
@@ -2330,7 +2330,7 @@ window.MENU_DATA = {
             }
           ],
           "nutrition": {
-            "kcal": 2030,
+            "kcal": 1985,
             "protein": 151,
             "fat": 44,
             "carbs": 246,
