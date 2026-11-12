@@ -97,3 +97,35 @@
   .topnav a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
   .week-btn,.view-tab,.quiet-button,.add-recipe,select{min-width:44px;min-height:44px}
 }
+
+/* Daily hand-off prep: visible in the menu, between recipe days and in Prep. */
+.menu-prep-row>td{width:auto!important;padding:0!important;background:#f4f5ee;border-bottom:1px solid #e1e6da}
+.menu-prep-row.menu-prep-start>td{background:#eef2e8}
+.menu-next-prep{padding:13px 16px 15px;border-left:3px solid var(--olive)}
+.menu-next-prep .prep-kicker{margin-bottom:3px;color:var(--rust);font-size:8px;font-weight:700;letter-spacing:.13em}
+.menu-next-prep h4{margin:0 0 8px;color:var(--ink);font:500 15px var(--serif)}
+.menu-next-prep ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 28px;margin:0;padding-left:20px;color:#5d6a60;font-size:10px;line-height:1.5}
+.menu-next-prep li{padding-left:2px}
+.recipe-next-prep{margin:-2px 14px 2px;padding:15px 18px;background:#eef2e8;border:1px solid #d9e1d2;border-radius:13px}
+.recipe-next-prep.recipe-prep-start{margin:0 0 14px;background:#f0e9dc;border-color:#e6dccb}
+.prep-callout-head{display:flex;gap:10px;align-items:flex-start}
+.prep-callout-head>span{width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;border-radius:50%;background:#dce5d5;color:var(--olive);font-size:16px}
+.prep-callout-head p{margin:0 0 2px;color:var(--rust);font-size:8px;font-weight:700;letter-spacing:.13em}
+.prep-callout-head h3{margin:0;font:500 17px var(--serif)}
+.recipe-next-prep ol{margin:10px 0 0;padding-left:56px;color:#58675b;font-size:11px;line-height:1.55}
+.recipe-next-prep li{margin:4px 0;padding-left:3px}
+.daily-prep-block{border-color:#d1dbc9!important;background:#eef2e8!important}
+.daily-prep-list{margin:3px 0 0;padding-left:21px}
+.daily-prep-list li{margin:7px 0;padding-left:3px;line-height:1.55}
+
+@media(max-width:760px){
+  .menu-table .menu-prep-row{display:block;margin:-3px 0 12px;border-color:#d9e1d2;border-radius:12px}
+  .menu-table .menu-prep-row>td,.menu-table .menu-prep-row>td:first-child{padding:0!important;background:transparent;border:0}
+  .menu-next-prep{padding:12px 13px 13px;border-left-width:3px}
+  .menu-next-prep h4{font-size:14px}
+  .menu-next-prep ol{grid-template-columns:1fr;gap:5px;font-size:10px}
+  .recipe-next-prep{margin:-2px 0 2px;padding:13px 14px}
+  .recipe-next-prep.recipe-prep-start{margin-bottom:12px}
+  .prep-callout-head h3{font-size:16px}
+  .recipe-next-prep ol{padding-left:22px;font-size:11px}
+}

@@ -47,15 +47,31 @@
     const picked=Object.keys(choice.recipes).filter(k=>choice.recipes[k]).length+Object.keys(choice.ingredients).filter(k=>choice.ingredients[k]).length;
     $('#shoppingCount').textContent=baseCount
   }
+  function prepSteps(prep){
+    return prep?.items?.length?`<ol>${prep.items.map(item=>`<li>${esc(scaleText(item,state.people))}</li>`).join('')}</ol>`:''
+  }
+  function menuPrepRow(prep,kind='tomorrow'){
+    if(!prep?.items?.length)return '';
+    return `<tr class="menu-prep-row ${kind==='start'?'menu-prep-start':''}"><td colspan="4"><aside class="menu-next-prep"><div class="prep-kicker">${kind==='start'?'СТАРТ НЕДЕЛИ':'ВЕЧЕРОМ · НА ЗАВТРА'}</div><h4>${esc(prep.title)}</h4>${prepSteps(prep)}</aside></td></tr>`
+  }
+  function recipePrepBlock(prep,kind='tomorrow'){
+    if(!prep?.items?.length)return '';
+    return `<aside class="recipe-next-prep ${kind==='start'?'recipe-prep-start':''}"><div class="prep-callout-head"><span aria-hidden="true">↳</span><div><p>${kind==='start'?'ПЕРЕД НАЧАЛОМ НЕДЕЛИ':'ПОСЛЕ УЖИНА'}</p><h3>${esc(prep.title)}</h3></div></div>${prepSteps(prep)}</aside>`
+  }
   function renderMenu(){
-    const rows=current().days.map((d,di)=>`<tr><td>${esc(d.name)}</td>${['Завтрак','Обед','Ужин'].map(slot=>{const m=d.meals.find(x=>x.slot===slot);const mi=m?d.meals.indexOf(m):-1;return `<td>${m?`<a class="meal-link" href="#recipe-${state.week}-${di}-${mi}" data-jump="${state.week}-${di}-${mi}"><small>${slot}</small>${esc(m.title)}</a>`:'—'}</td>`}).join('')}</tr>`).join('');
-    $('#menuGrid').innerHTML=rows;
+    const week=current(),rows=[];
+    rows.push(menuPrepRow(week.weekStartPrep,'start'));
+    week.days.forEach((d,di)=>{
+      rows.push(`<tr><td>${esc(d.name)}</td>${['Завтрак','Обед','Ужин'].map(slot=>{const m=d.meals.find(x=>x.slot===slot);const mi=m?d.meals.indexOf(m):-1;return `<td>${m?`<a class="meal-link" href="#recipe-${state.week}-${di}-${mi}" data-jump="${state.week}-${di}-${mi}"><small>${slot}</small>${esc(m.title)}</a>`:'—'}</td>`}).join('')}</tr>`);
+      rows.push(menuPrepRow(d.tomorrowPrep));
+    });
+    $('#menuGrid').innerHTML=rows.join('');
     $$('[data-jump]').forEach(a=>a.onclick=e=>{e.preventDefault();state.view='recipes';renderView();setTimeout(()=>{const el=$('#recipe-'+a.dataset.jump);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}},50)})
   }
   function ingredientId(di,mi,ii){return `${state.week}-${di}-${mi}-${ii}`}
   function renderRecipes(){
     const q=state.query.toLowerCase().trim(),choice=currentChoice();
-    $('#recipeDays').innerHTML=current().days.map((d,di)=>{
+    const week=current(),dayContent=week.days.map((d,di)=>{
       const cards=d.meals.map((m,mi)=>{
         if(q&&!m.title.toLowerCase().includes(q)&&!m.ingredients.join(' ').toLowerCase().includes(q))return '';
         const recipeId=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[recipeId],servings=m.portionBase*state.people;
@@ -67,8 +83,9 @@
         const prepSource=m.prepSource?'<p class="recipe-origin">'+esc(m.prepSource.label)+' — <a href="#'+esc(m.prepSource.id)+'" data-prep-source="'+esc(m.prepSource.id)+'">открыть шаг заготовки</a>.</p>':'';
         return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${plural(servings,'порция','порции','порций')}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(scaleText(x,state.people))}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(scaleText(x,state.people))}</p>`).join('')}</div>`:''}</div></div></div></details>`
       }).join('');
-      return cards?`<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>`:''
-    }).join('')||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>';
+      return cards?`<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>${q?'':recipePrepBlock(d.tomorrowPrep)}`:''
+    }).join('');
+    $('#recipeDays').innerHTML=(q?'':recipePrepBlock(week.weekStartPrep,'start'))+(dayContent||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>');
     $$('[data-source-id]').forEach(a=>a.onclick=e=>{e.preventDefault();state.week=+a.dataset.sourceWeek;state.query='';document.querySelector('#recipeSearch').value='';state.view='recipes';render();setTimeout(()=>{const el=$('#recipe-'+a.dataset.sourceId);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}},50)});
     $$('[data-prep-source]').forEach(a=>a.onclick=e=>{e.preventDefault();state.view='prep';renderView();const el=document.getElementById(a.dataset.prepSource);if(el){for(let p=el;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}});
     $$('[data-recipe]').forEach(button=>button.onclick=()=>{
@@ -116,8 +133,8 @@
     $$('#groceryGroups input').forEach(c=>c.onchange=()=>{checked[c.dataset.id]=c.checked;localStorage.setItem(key,JSON.stringify(checked));c.closest('.check-item').classList.toggle('checked',c.checked)})
   }
   function renderPrep(){
-    const blocks=current().prepBlocks||[];
-    $('#prepBlocks').innerHTML=blocks.map((b,i)=>{
+    const week=current(),blocks=week.prepBlocks||[];
+    const mainBlocks=blocks.map((b,i)=>{
       let group='',groups=[],content=[];
       const flush=()=>{
         if(content.length)groups.push(`<details class="prep-subgroup" ${groups.length===0?'open':''}><summary>${esc(group||'Подготовка')}</summary><div class="prep-subgroup-body">${content.join('')}</div></details>`);
@@ -133,6 +150,9 @@
       flush();
       return `<details class="prep-block" ${i===0?'open':''}><summary>${esc(b.title)}</summary><div class="prep-lines">${groups.join('')}</div></details>`;
     }).join('');
+    const daily=[week.weekStartPrep,...week.days.map(day=>day.tomorrowPrep)].filter(x=>x?.items?.length);
+    const dailyBlock=daily.length?`<details class="prep-block daily-prep-block" open><summary>Ежедневный вечерний план <span class="prep-count">${daily.length} переходов</span></summary><div class="prep-lines">${daily.map((prep,index)=>`<details class="prep-subgroup" ${index===0?'open':''}><summary>${esc(prep.title)}</summary><div class="prep-subgroup-body"><ol class="daily-prep-list">${prep.items.map(item=>`<li>${esc(scaleText(item,state.people))}</li>`).join('')}</ol></div></details>`).join('')}</div></details>`:'';
+    $('#prepBlocks').innerHTML=mainBlocks+dailyBlock;
   }
   function renderEntries(entries){return entries.map(x=>x.style.startsWith('HEADING')?`<h4>${esc(x.text)}</h4>`:x.style==='SUBTITLE'?`<p class="front-subtitle">${esc(x.text)}</p>`:`<p>${esc(x.text)}</p>`).join('')}
   function renderIntroContent(){
