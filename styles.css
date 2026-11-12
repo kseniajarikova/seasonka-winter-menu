@@ -91,3 +91,9 @@
   .menu-table .meal-link small{margin:1px 0 0;font-size:8px}
   .menu-table .meal-link:hover{transform:none}
 }
+
+/* Mobile touch targets: all primary controls remain comfortably tappable. */
+@media(max-width:760px){
+  .topnav a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
+  .week-btn,.view-tab,.quiet-button,.add-recipe,select{min-width:44px;min-height:44px}
+}
