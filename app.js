@@ -56,7 +56,12 @@
   }
   function recipePrepBlock(prep,kind='tomorrow'){
     if(!prep?.items?.length)return '';
-    return `<aside class="recipe-next-prep ${kind==='start'?'recipe-prep-start':''}"><div class="prep-callout-head"><span aria-hidden="true">↳</span><div><p>${kind==='start'?'ПЕРЕД НАЧАЛОМ НЕДЕЛИ':'ПОСЛЕ УЖИНА'}</p><h3>${esc(prep.title)}</h3></div></div>${prepSteps(prep)}</aside>`
+    return `<details class="recipe-next-prep ${kind==='start'?'recipe-prep-start':''}"><summary><span class="prep-callout-head"><span aria-hidden="true">↳</span><span><span class="prep-label">${kind==='start'?'ПЕРЕД НАЧАЛОМ НЕДЕЛИ':'ПОСЛЕ УЖИНА'}</span><strong>${esc(prep.title)}</strong></span></span></summary><div class="recipe-prep-body">${prepSteps(prep)}</div></details>`
+  }
+  function recipeWeeklyPrepBlock(block,kind='midweek'){
+    if(!block?.items?.length)return '';
+    const body=block.items.map(item=>item.style==='HEADING_4'?`<h4>${esc(item.text)}</h4>`:`<p>${esc(scaleText(item.text,state.people))}</p>`).join('');
+    return `<details class="recipe-weekly-prep ${kind==='start'?'recipe-weekly-start':''}"><summary><span>${kind==='start'?'ДЕНЬ ЗАГОТОВОК':'БОЛЬШАЯ ЗАГОТОВКА'}</span><strong>${esc(block.title)}</strong></summary><div class="recipe-weekly-prep-body">${body}</div></details>`
   }
   function renderMenu(){
     const week=current(),rows=[];
@@ -83,9 +88,10 @@
         const prepSource=m.prepSource?'<p class="recipe-origin">'+esc(m.prepSource.label)+' — <a href="#'+esc(m.prepSource.id)+'" data-prep-source="'+esc(m.prepSource.id)+'">открыть шаг заготовки</a>.</p>':'';
         return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${plural(servings,'порция','порции','порций')}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(scaleText(x,state.people))}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(scaleText(x,state.people))}</p>`).join('')}</div>`:''}</div></div></div></details>`
       }).join('');
-      return cards?`<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>${q?'':recipePrepBlock(d.tomorrowPrep)}`:''
+      const weeklyPrep=!q&&di===2&&week.prepBlocks?.[1]?recipeWeeklyPrepBlock(week.prepBlocks[1]):'';
+      return cards?`<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>${q?'':recipePrepBlock(d.tomorrowPrep)}${weeklyPrep}`:''
     }).join('');
-    $('#recipeDays').innerHTML=(q?'':recipePrepBlock(week.weekStartPrep,'start'))+(dayContent||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>');
+    $('#recipeDays').innerHTML=(q?'':recipeWeeklyPrepBlock(week.prepBlocks?.[0],'start'))+(dayContent||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>');
     $$('[data-source-id]').forEach(a=>a.onclick=e=>{e.preventDefault();state.week=+a.dataset.sourceWeek;state.query='';document.querySelector('#recipeSearch').value='';state.view='recipes';render();setTimeout(()=>{const el=$('#recipe-'+a.dataset.sourceId);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}},50)});
     $$('[data-prep-source]').forEach(a=>a.onclick=e=>{e.preventDefault();state.view='prep';renderView();const el=document.getElementById(a.dataset.prepSource);if(el){for(let p=el;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}});
     $$('[data-recipe]').forEach(button=>button.onclick=()=>{
