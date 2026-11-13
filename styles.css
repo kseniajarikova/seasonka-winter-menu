@@ -96,6 +96,7 @@
 @media(max-width:760px){
   .topnav a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
   .week-btn,.view-tab,.quiet-button,.add-recipe,select{min-width:44px;min-height:44px}
+  .brand,.intro-context summary,footer>a:last-child{display:flex;align-items:center;min-height:44px}
 }
 
 /* Daily hand-off prep: visible in the menu, between recipe days and in Prep. */
@@ -148,3 +149,4 @@
   .recipe-weekly-prep>summary{padding:14px 42px 14px 14px}
   .recipe-weekly-prep-body{padding:0 14px 15px}
 }
+
