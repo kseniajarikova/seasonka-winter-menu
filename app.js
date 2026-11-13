@@ -77,6 +77,7 @@
       rows.push(`<tr><td>${esc(d.name)}</td>${['Завтрак','Обед','Ужин'].map(slot=>{const m=d.meals.find(x=>x.slot===slot);const mi=m?d.meals.indexOf(m):-1;return `<td>${m?`<a class="meal-link" href="#recipe-${state.week}-${di}-${mi}" data-jump="${state.week}-${di}-${mi}"><small>${slot}</small>${esc(m.title)}</a>`:'—'}</td>`}).join('')}</tr>`);
       rows.push(menuPrepRow(d.tomorrowPrep));
       if(di===2&&week.prepBlocks?.[1])rows.push(menuPrepRow(blockAsPlan(week.prepBlocks[1])));
+      if(di===6&&week.endPrepBlock)rows.push(menuPrepRow(blockAsPlan(week.endPrepBlock)));
     });
     $('#menuGrid').innerHTML=rows.join('');
     $$('[data-jump]').forEach(a=>a.onclick=e=>{e.preventDefault();state.view='recipes';renderView();setTimeout(()=>{const el=$('#recipe-'+a.dataset.jump);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}},50)})
@@ -97,7 +98,8 @@
         return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${plural(servings,'порция','порции','порций')}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(scaleText(x,state.people))}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(scaleText(x,state.people))}</p>`).join('')}</div>`:''}</div></div></div></details>`
       }).join('');
       const weeklyPrep=!q&&di===2&&week.prepBlocks?.[1]?recipeWeeklyPrepBlock(week.prepBlocks[1]):'';
-      return cards?`${q?'':recipePrepBlock(d.morningPrep,'morning')}<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>${q?'':recipePrepBlock(d.tomorrowPrep)}${weeklyPrep}`:''
+      const endPrep=!q&&di===6&&week.endPrepBlock?recipeWeeklyPrepBlock(week.endPrepBlock,'end'):'';
+      return cards?`${q?'':recipePrepBlock(d.morningPrep,'morning')}<article class="day-group"><div class="day-title"><h3>${esc(d.name)}</h3><span>${d.meals.length} блюда</span></div><div class="recipe-list">${cards}</div></article>${q?'':recipePrepBlock(d.tomorrowPrep)}${weeklyPrep}${endPrep}`:''
     }).join('');
     $('#recipeDays').innerHTML=(q?'':recipeWeeklyPrepBlock(week.prepBlocks?.[0],'start'))+(dayContent||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>');
     $$('[data-source-id]').forEach(a=>a.onclick=e=>{e.preventDefault();state.week=+a.dataset.sourceWeek;state.query='';document.querySelector('#recipeSearch').value='';state.view='recipes';render();setTimeout(()=>{const el=$('#recipe-'+a.dataset.sourceId);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}},50)});
@@ -147,7 +149,7 @@
     $$('#groceryGroups input').forEach(c=>c.onchange=()=>{checked[c.dataset.id]=c.checked;localStorage.setItem(key,JSON.stringify(checked));c.closest('.check-item').classList.toggle('checked',c.checked)})
   }
   function renderPrep(){
-    const week=current(),blocks=week.prepBlocks||[];
+    const week=current(),blocks=[...(week.prepBlocks||[]),...(week.endPrepBlock?[week.endPrepBlock]:[])];
     const mainBlocks=blocks.map((b,i)=>{
       let group='',groups=[],content=[];
       const flush=()=>{
@@ -199,3 +201,4 @@
   const initial=location.hash.slice(1);if(['menu','shopping','prep','recipes'].includes(initial))state.view=initial;
   render()
 })();
+
