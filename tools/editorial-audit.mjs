@@ -9,6 +9,7 @@ vm.runInContext(source,context);
 const data=context.window.MENU_DATA;
 const errors=[];
 const strings=[];
+const recipePrepSources=recipe=>recipe.prepSources?.length?recipe.prepSources:(recipe.prepSource?[recipe.prepSource]:[]);
 
 function walk(value,path=[]){
   if(typeof value==='string')strings.push({path:path.join('.'),text:value});
@@ -49,7 +50,13 @@ for(const [weekNumber,week] of weeks){
   };
   collectIds(visiblePrep);
   week.days.forEach(day=>day.meals.forEach(recipe=>{
-    if(recipe.prepSource&&!prepIds.has(recipe.prepSource.id))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: ссылка ведёт на отсутствующую заготовку ${recipe.prepSource.id}`);
+    for(const prepSource of recipePrepSources(recipe)){
+      if(!prepIds.has(prepSource.id))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: ссылка ведёт на отсутствующую заготовку ${prepSource.id}`);
+    }
+    const preprepared=recipe.ingredients.some(item=>/(?:сварен|запеч[её]н|заготовлен|замаринован|приготовлен|подготовлен)[а-яё\s]*(?:в день|вечером|накануне)|из заготовки/i.test(item));
+    if(preprepared&&!recipe.source&&!recipePrepSources(recipe).length){
+      errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: заранее приготовленный компонент остался без ссылки на процесс`);
+    }
   }));
 }
 
@@ -125,7 +132,7 @@ for(const noodleMeal of noodleMeals){
 
 const w2=data.weeks['2'];
 const w2Start=JSON.stringify(w2.prepBlocks[0]);
-for(const required of ['Куриную грудку 400 г','Картофель 400 г','брокколи 300 г','Фарш 300 г','Перловку 85 г','Дайкон 100 г']){
+for(const required of ['Филе куриного бедра без кожи и кости 400 г','Картофель 400 г','брокколи 300 г','Фарш 300 г','Перловку 85 г','Дайкон 100 г']){
   if(!new RegExp(required,'i').test(w2Start))errors.push(`В заготовках перед днём 8 нет: ${required}`);
 }
 if(JSON.stringify(w1.endPrepBlock)!==JSON.stringify(w2.prepBlocks[0]))errors.push('Блок вечера дня 7 различается в конце недели 1 и начале недели 2');
@@ -141,7 +148,7 @@ if(JSON.stringify(w2.endPrepBlock)!==JSON.stringify(w3.prepBlocks[0]))errors.pus
 const day15Lunch=w3.days[0].meals.find(meal=>meal.slot==='Обед');
 const day15Dinner=w3.days[0].meals.find(meal=>meal.slot==='Ужин');
 if(!day15Lunch?.source?.label?.includes('ужина дня 14'))errors.push('Обед дня 15: не указан источник из ужина дня 14');
-if(day15Dinner?.prepSource?.id!=='prep-w3-day15-dinner')errors.push('Ужин дня 15: нет ссылки на вечернюю заготовку дня 14');
+if(!recipePrepSources(day15Dinner).some(source=>source.id==='prep-w3-day15-dinner'))errors.push('Ужин дня 15: нет ссылки на вечернюю заготовку дня 14');
 
 for(const [weekNumber,week] of weeks){
   week.days.forEach(day=>day.meals.forEach(recipe=>recipe.ingredients.forEach(item=>{
@@ -161,7 +168,51 @@ const daikonLinks=[
   w2.days[5].meals.find(meal=>meal.slot==='Ужин'),w2.days[6].meals.find(meal=>meal.slot==='Обед'),
   data.weeks['3'].days[0].meals.find(meal=>meal.slot==='Ужин'),data.weeks['3'].days[1].meals.find(meal=>meal.slot==='Обед')
 ];
-if(daikonLinks.some(recipe=>!recipe?.prepSource?.id?.includes('daikon')&&recipe?.prepSource?.id!=='prep-w3-day15-dinner'))errors.push('Не у всех блюд с заранее приготовленным дайконом есть ссылка на заготовку');
+if(daikonLinks.some(recipe=>!recipePrepSources(recipe).some(source=>source.id.includes('daikon'))))errors.push('Не у всех блюд с заранее приготовленным дайконом есть ссылка на заготовку');
+
+const cutletDinner=w3.days[1].meals.find(meal=>meal.slot==='Ужин');
+if(!/куриного бедра/i.test(cutletDinner?.title||'')||!cutletDinner?.ingredients.some(item=>/фарш из куриного бедра/i.test(item))){
+  errors.push('День 16: котлеты должны быть из куриного бедра');
+}
+if(cutletDinner?.ingredients.some(item=>/грудк/i.test(item))||cutletDinner?.steps.some(step=>/грудк/i.test(step))){
+  errors.push('День 16: в котлетах осталась куриная грудка');
+}
+
+for(const [weekNumber,week] of weeks){
+  week.days.forEach(day=>day.meals.forEach(recipe=>{
+    const text=JSON.stringify(recipe);
+    const rawPoultry=recipe.ingredients.some(item=>/^(?:куриная грудка|куриное филе|филе куриного бедра|фарш из куриного бедра|филе индейки|фарш индейки)/i.test(item));
+    if(rawPoultry&&!/74\s*°C/i.test(recipe.steps.join(' ')))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: для сырой птицы не указаны 74 °C`);
+    if(/сметанн(?:ом|ый|ого) соус/i.test(text)&&!/(?:не кипятить|не доводя до бурного кипения|без бурного кипения)/i.test(text))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: нет защиты сметанного соуса от бурного кипения`);
+  }));
+}
+
+const fishDinners=[w1.days[1],w1.days[5],w2.days[3],w2.days[5],w3.days[5]].map(day=>day.meals.find(meal=>meal.slot==='Ужин'));
+if(fishDinners.some(recipe=>!/63\s*°C/i.test(recipe.steps.join(' '))))errors.push('Не во всех горячих рыбных блюдах указаны 63 °C и щадящее приготовление');
+const shrimpDinner=w3.days[2].meals.find(meal=>meal.slot==='Ужин');
+if(!shrimpDinner.steps.some(step=>/1–2 минуты с каждой стороны/i.test(step)))errors.push('День 17: для креветок не указан короткий режим приготовления');
+if(strings.some(item=>/куриная грудка для супа|фарш индейки[^.]*дня 16|котлет[ау] из индейки/i.test(item.text)))errors.push('После кулинарной правки осталась старая птица в таймлайне');
+const troutDinner=w1.days[5].meals.find(meal=>meal.slot==='Ужин');
+if(!troutDinner.ingredients.some(item=>/^перловка — 220 г сухой/i.test(item))||!w1.days[4].tomorrowPrep.items.some(item=>/Перловку 220 г залить 900 мл/i.test(item)))errors.push('День 6: вес перловки в рецепте и вечерней заготовке не совпадает');
+const soupDinner=w1.days[4].meals.find(meal=>meal.slot==='Ужин');
+if(soupDinner.ingredients.filter(item=>/^чеснок/i.test(item)).length!==1||soupDinner.ingredients.filter(item=>/^имбирь/i.test(item)).length!==1||soupDinner.ingredients.filter(item=>/^соевый соус/i.test(item)).length!==1)errors.push('День 5: в супе задвоены общие ингредиенты супа и банчанов');
+const shrimpLunch=w3.days[3].meals.find(meal=>meal.slot==='Обед');
+if(!shrimpLunch.ingredients.some(item=>/^кимчи-стайл — 100 г/i.test(item))||!w3.days[2].morningPrep.items.some(item=>/100 г оставить отдельно для обеда/i.test(item)))errors.push('Дни 17–18: порция кимчи-стайл не согласована');
+
+const requiredPrepLinks={
+  '1-0-Обед':['prep-w1-lunch-chicken','prep-w1-beet'],
+  '1-0-Ужин':['prep-w1-chicken-marinade','prep-w1-squash','prep-w1-rice'],
+  '1-4-Ужин':['prep-w1-day5-banchan'],
+  '2-3-Ужин':['prep-w2-day11-dinner','prep-w2-cod-day11'],
+  '3-0-Ужин':['prep-w3-day15-dinner','prep-w3-daikon-15','prep-w3-chicken-day15'],
+  '3-2-Ужин':['prep-w3-day17-kimchi']
+};
+for(const [key,ids] of Object.entries(requiredPrepLinks)){
+  const [weekNumber,dayIndex,slot]=key.split('-');
+  const recipe=data.weeks[weekNumber].days[Number(dayIndex)].meals.find(meal=>meal.slot===slot);
+  const actual=new Set(recipePrepSources(recipe).map(source=>source.id));
+  for(const id of ids)if(!actual.has(id))errors.push(`${recipe.title}: нет ссылки на ${id}`);
+}
 
 console.log(`Недели: ${weeks.length}`);
 console.log(`Дни: ${weeks.reduce((sum,[,week])=>sum+week.days.length,0)}`);
