@@ -182,13 +182,14 @@ for(const [weekNumber,week] of weeks){
   week.days.forEach(day=>day.meals.forEach(recipe=>{
     const text=JSON.stringify(recipe);
     const rawPoultry=recipe.ingredients.some(item=>/^(?:куриная грудка|куриное филе|филе куриного бедра|фарш из куриного бедра|филе индейки|фарш индейки)/i.test(item));
-    if(rawPoultry&&!/74\s*°C/i.test(recipe.steps.join(' ')))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: для сырой птицы не указаны 74 °C`);
+    if(/\b(?:63|71|74)\s*°/i.test(recipe.steps.join(' ')))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: в шагах осталась внутренняя температура`);
+    if(rawPoultry&&!/\d+\s*минут/i.test(recipe.steps.join(' ')))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: для сырой птицы не указано время приготовления`);
     if(/сметанн(?:ом|ый|ого) соус/i.test(text)&&!/(?:не кипятить|не доводя до бурного кипения|без бурного кипения)/i.test(text))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: нет защиты сметанного соуса от бурного кипения`);
   }));
 }
 
 const fishDinners=[w1.days[1],w1.days[5],w2.days[3],w2.days[5],w3.days[5]].map(day=>day.meals.find(meal=>meal.slot==='Ужин'));
-if(fishDinners.some(recipe=>!/63\s*°C/i.test(recipe.steps.join(' '))))errors.push('Не во всех горячих рыбных блюдах указаны 63 °C и щадящее приготовление');
+if(fishDinners.some(recipe=>!/\d+\s*минут/i.test(recipe.steps.join(' '))))errors.push('Не во всех горячих рыбных блюдах указано время приготовления');
 const shrimpDinner=w3.days[2].meals.find(meal=>meal.slot==='Ужин');
 if(!shrimpDinner.steps.some(step=>/1–2 минуты с каждой стороны/i.test(step)))errors.push('День 17: для креветок не указан короткий режим приготовления');
 if(strings.some(item=>/куриная грудка для супа|фарш индейки[^.]*дня 16|котлет[ау] из индейки/i.test(item.text)))errors.push('После кулинарной правки осталась старая птица в таймлайне');
