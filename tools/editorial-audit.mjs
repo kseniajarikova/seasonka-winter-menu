@@ -132,7 +132,7 @@ for(const noodleMeal of noodleMeals){
 
 const w2=data.weeks['2'];
 const w2Start=JSON.stringify(w2.prepBlocks[0]);
-for(const required of ['Филе куриного бедра без кожи и кости 400 г','Картофель 400 г','брокколи 300 г','Фарш 300 г','Перловку 85 г','Дайкон 100 г']){
+for(const required of ['Филе куриного бедра без кожи и кости 400 г','Картофель 200 г','брокколи 300 г','Фарш 300 г','Перловку 120 г','Дайкон 100 г']){
   if(!new RegExp(required,'i').test(w2Start))errors.push(`В заготовках перед днём 8 нет: ${required}`);
 }
 if(JSON.stringify(w1.endPrepBlock)!==JSON.stringify(w2.prepBlocks[0]))errors.push('Блок вечера дня 7 различается в конце недели 1 и начале недели 2');

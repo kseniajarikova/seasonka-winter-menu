@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   const data=window.MENU_DATA;
-  const state={week:1,people:1,view:'menu',query:'',expanded:false};
+  const state={week:1,people:1,view:'menu',query:'',expanded:false,prepReturn:null};
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const weekNames={1:'Первая неделя',2:'Вторая неделя',3:'Третья неделя'};
@@ -104,7 +104,18 @@
     }).join('');
     $('#recipeDays').innerHTML=(q?'':recipeWeeklyPrepBlock(week.prepBlocks?.[0],'start'))+(dayContent||'<div class="empty-search">Ничего не нашлось. Попробуй другое название или ингредиент.</div>');
     $$('[data-source-id]').forEach(a=>a.onclick=e=>{e.preventDefault();state.week=+a.dataset.sourceWeek;state.query='';document.querySelector('#recipeSearch').value='';state.view='recipes';render();setTimeout(()=>{const el=$('#recipe-'+a.dataset.sourceId);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}},50)});
-    $$('[data-prep-source]').forEach(a=>a.onclick=e=>{e.preventDefault();state.view='prep';renderView();const el=document.getElementById(a.dataset.prepSource);if(el){for(let p=el;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;el.scrollIntoView({behavior:'smooth',block:'center'})}});
+    $$('[data-prep-source]').forEach(a=>a.onclick=e=>{
+      e.preventDefault();
+      const origin=a.closest('.recipe-card');
+      const step=document.getElementById(a.dataset.prepSource);
+      if(!origin||!step)return;
+      state.prepReturn={week:state.week,recipe:origin.id,query:state.query};
+      state.view='prep';
+      renderView();
+      for(let p=step;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;
+      $('#prepReturn').focus({preventScroll:true});
+      step.scrollIntoView({behavior:'smooth',block:'center'});
+    });
     $$('[data-recipe]').forEach(button=>button.onclick=()=>{
       const choice=currentChoice(),id=button.dataset.recipe;
       if(choice.recipes[id])delete choice.recipes[id];else choice.recipes[id]=true;
@@ -191,11 +202,34 @@
     $$('.view').forEach(v=>v.classList.toggle('active',v.id===state.view));
     $$('.view-tab').forEach(v=>{v.classList.toggle('active',v.dataset.view===state.view);v.setAttribute('aria-pressed',v.dataset.view===state.view)});
     $$('.topnav a').forEach(v=>v.classList.toggle('current',v.dataset.view===state.view));
+    const returnButton=$('#prepReturn');
+    returnButton.hidden=state.view!=='prep'||!state.prepReturn;
+    if(!returnButton.hidden){
+      const {week,recipe}=state.prepReturn;
+      const day=+recipe.split('-')[2];
+      returnButton.textContent='← Вернуться к рецепту · '+data.weeks[week].days[day].name.toLowerCase();
+    }
     history.replaceState(null,'','#'+state.view)
   }
   function render(){renderSwitch();renderIntro();renderMenu();renderRecipes();renderGroceries();renderPrep();renderIntroContent();renderView()}
   $$('.view-tab').forEach(b=>b.onclick=()=>{state.view=b.dataset.view;renderView()});
   $$('.topnav a').forEach(a=>a.onclick=e=>{e.preventDefault();state.view=a.dataset.view;renderView();document.querySelector('#'+state.view).scrollIntoView({behavior:'smooth'})});
+  $('#prepReturn').onclick=()=>{
+    const origin=state.prepReturn;
+    if(!origin)return;
+    state.prepReturn=null;
+    state.week=origin.week;
+    state.query=origin.query;
+    $('#recipeSearch').value=origin.query;
+    state.view='recipes';
+    render();
+    const recipe=document.getElementById(origin.recipe);
+    if(recipe){
+      recipe.open=true;
+      recipe.querySelector('summary').focus({preventScroll:true});
+      recipe.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  };
   peopleSelect.onchange=()=>{state.people=+peopleSelect.value;render()};
   $('#recipeSearch').oninput=e=>{state.query=e.target.value;renderRecipes()};
   $('#toggleRecipes').onclick=()=>{state.expanded=!state.expanded;$('#toggleRecipes').textContent=state.expanded?'Свернуть все':'Развернуть все';renderRecipes()};

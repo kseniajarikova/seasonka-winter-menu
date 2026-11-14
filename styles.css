@@ -150,3 +150,5 @@
   .recipe-weekly-prep-body{padding:0 14px 15px}
 }
 
+
+.prep-return{position:sticky;top:105px;z-index:5;pointer-events:none}.prep-return button{pointer-events:auto;margin:0 0 10px;background:var(--card);box-shadow:var(--shadow)}.prep-return button[hidden]{display:none}.recipe-card{scroll-margin-top:105px}

@@ -1,4 +1,6 @@
 const foods = {
+  quinoaDry: [368, 14.1, 6.1, 64.2],
+  chickenThigh: [144, 18.6, 7.9, 0],
   egg: [72, 6.3, 4.8, 0.4, "piece"],
   greekYogurt: [73, 9.0, 2.0, 4.0],
   mandarin: [53, 0.8, 0.3, 13.3],
@@ -104,30 +106,30 @@ const week1 = [
     meals: {
       breakfast: [g("greekYogurt", 150), g("oats", 30), g("berries", 100), g("persimmon", 100), g("pumpkinSeeds", 5)],
       lunch: [g("chickenBreast", 250), g("brownRiceDry", 115), g("pumpkin", 150), g("broccoli", 150), g("edamame", 50), g("napaCabbage", 80), g("gochujang", 10), g("garlic", 4), g("sesameOil", 4), g("sesame", 4), g("oliveOil", 4)],
-      dinner: [g("cod", 250), g("whiteBeans", 100), g("potato", 150), g("brownRiceDry", 40), g("spinach", 50), g("onion", 50), g("garlic", 3), g("oliveOil", 5), g("sesameOil", 2)],
+      dinner: [g("cod", 250), g("whiteBeans", 100), g("brownRiceDry", 70), g("spinach", 50), g("onion", 50), g("garlic", 3), g("oliveOil", 5), g("sesameOil", 2)],
     },
   },
   {
     day: "Среда",
     meals: {
-      breakfast: [g("milletDry", 60), g("pumpkin", 100), g("skyr", 300), g("apple", 70)],
-      lunch: [g("cod", 250), g("whiteBeans", 100), g("potato", 150), g("brownRiceDry", 40), g("spinach", 50), g("onion", 50), g("garlic", 3), g("oliveOil", 15), g("sesameOil", 2)],
-      dinner: [g("porkTenderloin", 160), g("brownRiceDry", 65), g("edamame", 50), g("napaCabbage", 150), g("cucumber", 100), g("carrot", 50), g("pear", 40), g("sesameOil", 5), g("sesame", 5.5), g("oliveOil", 1.25)],
+      breakfast: [g("milletDry", 60), g("pumpkin", 100), g("skyr", 300), g("apple", 100)],
+      lunch: [g("cod", 250), g("whiteBeans", 100), g("potato", 330), g("spinach", 50), g("onion", 50), g("garlic", 3), g("oliveOil", 15), g("sesameOil", 2)],
+      dinner: [g("porkTenderloin", 160), g("quinoaDry", 65), g("edamame", 50), g("napaCabbage", 150), g("cucumber", 100), g("carrot", 50), g("pear", 40), g("sesameOil", 5), g("sesame", 5.5), g("oliveOil", 1.25)],
     },
   },
   {
     day: "Четверг",
     meals: {
-      breakfast: [pc("egg", 2), g("cottageCheese2", 100), g("spinach", 50), g("wholegrainBread", 70), g("potato", 150)],
-      lunch: [g("porkTenderloin", 160), g("brownRiceDry", 65), g("edamame", 50), g("napaCabbage", 150), g("cucumber", 100), g("carrot", 50), g("pear", 40), g("sesameOil", 5), g("sesame", 5.5), g("oliveOil", 1.25)],
-      dinner: [g("chickenBreast", 125), g("tofuFirm", 20), g("brownRiceDry", 85), pc("egg", 1), g("napaCabbage", 100), g("spinach", 60), g("carrot", 50), g("mushrooms", 60), g("edamame", 30), g("gochujang", 10), g("sesame", 1), g("oliveOil", 2.5), g("daikon", 50)],
+      breakfast: [pc("egg", 2), g("cottageCheese2", 100), g("spinach", 50), g("wholegrainBread", 120), g("apple", 80)],
+      lunch: [g("porkTenderloin", 160), g("quinoaDry", 65), g("edamame", 50), g("napaCabbage", 150), g("cucumber", 100), g("carrot", 50), g("pear", 40), g("sesameOil", 5), g("sesame", 5.5), g("oliveOil", 1.25)],
+      dinner: [g("chickenBreast", 125), g("tofuFirm", 20), g("brownRiceDry", 100), pc("egg", 1), g("napaCabbage", 100), g("spinach", 60), g("carrot", 50), g("mushrooms", 60), g("edamame", 30), g("gochujang", 10), g("sesame", 1), g("oliveOil", 2.5), g("daikon", 50)],
     },
   },
   {
     day: "Пятница",
     meals: {
       breakfast: [g("buckwheatDry", 45), g("chickenBreast", 70), pc("egg", 1), g("mushrooms", 100), g("spinach", 30), g("wholegrainBread", 50), g("creamCheese", 15), g("oliveOil", 1)],
-      lunch: [g("chickenBreast", 100), g("brownRiceDry", 105), g("tofuFirm", 20), g("napaCabbage", 100), g("spinach", 60), g("carrot", 50), g("mushrooms", 60), g("edamame", 30), g("daikon", 50), pc("egg", 1), g("gochujang", 10), g("sesame", 1), g("oliveOil", 1.5)],
+      lunch: [g("chickenBreast", 125), g("brownRiceDry", 100), g("tofuFirm", 20), g("napaCabbage", 100), g("spinach", 60), g("carrot", 50), g("mushrooms", 60), g("edamame", 30), g("daikon", 50), pc("egg", 1), g("gochujang", 10), g("sesame", 1), g("oliveOil", 1.5)],
       dinner: [g("eggNoodlesDry", 90), g("chickenBreast", 100), g("tofuFirm", 50), g("edamame", 30), g("napaCabbage", 130), g("mushrooms", 155), g("carrot", 40), g("kimchi", 50), g("sesameOil", 2.5), g("oliveOil", 1), g("sesame", 1)],
     },
   },
@@ -158,22 +160,22 @@ const week2 = [
     meals: {
       breakfast: [pc("egg", 2), g("tomato", 100), g("feta", 15), g("wholegrainBread", 130), g("oliveOil", 3), g("apple", 200)],
       lunch: [g("turkeyBreast", 200), g("wholewheatPastaDry", 110), g("whiteBeans", 50), g("tomato", 150), g("spinach", 50), g("onion", 25), g("garlic", 3), g("parmesan", 10), g("kimchi", 50)],
-      dinner: [g("chickenBreast", 200), g("potato", 200), g("broccoli", 150), g("garlic", 3), g("sesame", 3), g("oliveOil", 3)],
+      dinner: [g("chickenThigh", 200), g("potato", 200), g("broccoli", 150), g("garlic", 3), g("sesame", 3), g("oliveOil", 3)],
     },
   },
   {
     day: "Вторник",
     meals: {
-      breakfast: [g("skyr", 350), g("apple", 240), g("oats", 70), g("pumpkinSeeds", 8)],
-      lunch: [g("chickenBreast", 200), g("potato", 200), g("broccoli", 150), g("garlic", 3), g("sesame", 3), g("oliveOil", 3), g("brownRiceDry", 60)],
-      dinner: [g("leanBeefMince", 150), g("onion", 25), pc("egg", 0.5), g("wholegrainBreadcrumbs", 7.5), g("tomato", 100), g("sourCream", 20), g("potato", 150), g("cauliflower", 150), g("milk", 20), g("cucumber", 100), g("garlic", 1.5), g("sesameOil", 1.5), g("vegetableOil", 2.5)],
+      breakfast: [g("skyr", 350), g("apple", 240), g("oats", 60), g("pumpkinSeeds", 8)],
+      lunch: [g("chickenThigh", 200), g("broccoli", 150), g("garlic", 3), g("sesame", 3), g("oliveOil", 3), g("brownRiceDry", 100)],
+      dinner: [g("leanBeefMince", 150), g("onion", 25), pc("egg", 0.5), g("wholegrainBreadcrumbs", 7.5), g("tomato", 100), g("sourCream", 20), g("potato", 300), g("cauliflower", 300), g("milk", 40), g("cucumber", 100), g("garlic", 1.5), g("sesameOil", 1.5), g("vegetableOil", 2.5)],
     },
   },
   {
     day: "Среда",
     meals: {
       breakfast: [g("skyr", 300), pc("egg", 1), g("oatFlour", 50), g("pear", 140), g("naturalYogurt", 50)],
-      lunch: [g("leanBeefMince", 150), g("onion", 25), pc("egg", 0.5), g("wholegrainBreadcrumbs", 7.5), g("tomato", 100), g("sourCream", 20), g("potato", 150), g("cauliflower", 150), g("milk", 20), g("cucumber", 100), g("garlic", 1.5), g("sesameOil", 1.5), g("vegetableOil", 2.5), g("pearlBarleyDry", 85)],
+      lunch: [g("leanBeefMince", 150), g("onion", 25), pc("egg", 0.5), g("wholegrainBreadcrumbs", 7.5), g("tomato", 100), g("sourCream", 20), g("cucumber", 100), g("garlic", 1.5), g("sesameOil", 1.5), g("vegetableOil", 2.5), g("pearlBarleyDry", 120)],
       dinner: [g("porkTenderloin", 225), g("buckwheatDry", 80), g("carrot", 125), g("naturalYogurt", 40), g("garlic", 2), g("daikon", 50)],
     },
   },
@@ -190,14 +192,14 @@ const week2 = [
     meals: {
       breakfast: [g("wholegrainBread", 60), g("avocado", 25), pc("egg", 1), g("skyr", 250)],
       lunch: [g("cod", 250), g("pearlBarleyDry", 85), g("cauliflower", 150), g("tomatoPaste", 5), g("honey", 4), g("cucumber", 100), g("sesame", 2.5), g("oliveOil", 10)],
-      dinner: [g("bellPepper", 175), g("turkeyMince", 200), g("brownRiceDry", 80), g("onion", 25), g("tomato", 100), g("garlic", 2), g("oliveOil", 4), g("napaCabbage", 100), g("cucumber", 50), g("sesame", 2), g("parsnip", 150)],
+      dinner: [g("bellPepper", 175), g("turkeyMince", 200), g("brownRiceDry", 110), g("onion", 25), g("tomato", 100), g("garlic", 2), g("oliveOil", 4), g("napaCabbage", 100), g("cucumber", 50), g("sesame", 2)],
     },
   },
   {
     day: "Суббота",
     meals: {
       breakfast: [g("ryeBread", 60), g("smokedSalmon", 60), g("cucumber", 60), g("creamCheese", 25), g("skyr", 150), g("oats", 30), g("walnuts", 5)],
-      lunch: [g("bellPepper", 175), g("turkeyMince", 200), g("brownRiceDry", 80), g("onion", 25), g("tomato", 100), g("garlic", 2), g("oliveOil", 4), g("napaCabbage", 100), g("sesame", 2), g("parsnip", 150)],
+      lunch: [g("bellPepper", 175), g("turkeyMince", 200), g("brownRiceDry", 110), g("onion", 25), g("tomato", 100), g("garlic", 2), g("oliveOil", 4), g("napaCabbage", 100), g("sesame", 2)],
       dinner: [g("hake", 250), g("cornmealDry", 90), g("sourCream", 25), g("daikon", 50), g("oliveOil", 2.5)],
     },
   },
@@ -257,14 +259,14 @@ const week3 = [
     meals: {
       breakfast: [g("cornFlour", 40), pc("egg", 1), g("milk", 60), g("naturalYogurt", 100), g("berries", 100), g("vegetableOil", 4), g("skyr", 300), g("oats", 50), g("apple", 150)],
       lunch: [g("potato", 200), g("leanBeefMince", 150), g("mushrooms", 100), g("onion", 40), g("naturalYogurt", 30), g("hardCheese", 10), g("oliveOil", 4), g("napaCabbage", 100), g("sesame", 2)],
-      dinner: [g("cod", 150), g("sweetPotato", 250), g("brownRiceDry", 60), g("onion", 50), g("spinach", 100), g("garlic", 2.5), g("sesameOil", 2), g("sesame", 2), g("oliveOil", 4)],
+      dinner: [g("cod", 150), g("brownRiceDry", 100), g("onion", 50), g("spinach", 100), g("garlic", 2.5), g("sesameOil", 2), g("sesame", 2), g("oliveOil", 4)],
     },
   },
   {
     day: "Воскресенье",
     meals: {
-      breakfast: [g("wholegrainBread", 60), g("tuna", 80), pc("egg", 1), g("naturalYogurt", 25), g("cucumber", 60), g("skyr", 150), g("oats", 30), g("apple", 100)],
-      lunch: [g("cod", 150), g("sweetPotato", 250), g("brownRiceDry", 60), g("onion", 50), g("spinach", 100), g("garlic", 2.5), g("sesameOil", 2), g("sesame", 2), g("oliveOil", 4)],
+      breakfast: [g("wholegrainBread", 60), g("tuna", 80), pc("egg", 1), g("naturalYogurt", 25), g("cucumber", 60), g("skyr", 150), g("oats", 50), g("apple", 150)],
+      lunch: [g("cod", 150), g("sweetPotato", 380), g("onion", 50), g("spinach", 100), g("garlic", 2.5), g("sesameOil", 2), g("sesame", 2), g("oliveOil", 4)],
       dinner: [g("beefStew", 160), g("turnip", 150), g("pearlBarleyDry", 80), g("carrot", 60), g("celeryRoot", 40), g("onion", 30), g("prunes", 20), g("oliveOil", 4), g("daikon", 50)],
     },
   },
