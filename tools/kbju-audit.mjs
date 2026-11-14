@@ -113,7 +113,7 @@ const week1 = [
     day: "Среда",
     meals: {
       breakfast: [g("milletDry", 60), g("pumpkin", 100), g("skyr", 300), g("apple", 100)],
-      lunch: [g("cod", 250), g("whiteBeans", 100), g("potato", 330), g("spinach", 50), g("onion", 50), g("garlic", 3), g("oliveOil", 15), g("sesameOil", 2)],
+      lunch: [g("cod", 250), g("whiteBeans", 100), g("brownRiceDry", 70), g("spinach", 50), g("onion", 50), g("garlic", 3), g("oliveOil", 15), g("sesameOil", 2)],
       dinner: [g("porkTenderloin", 160), g("quinoaDry", 65), g("edamame", 50), g("napaCabbage", 150), g("cucumber", 100), g("carrot", 50), g("pear", 40), g("sesameOil", 5), g("sesame", 5.5), g("oliveOil", 1.25)],
     },
   },
