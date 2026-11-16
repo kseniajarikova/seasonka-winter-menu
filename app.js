@@ -66,7 +66,7 @@
   function recipePrepBlock(prep,kind='tomorrow'){
     if(!prep?.items?.length)return '';
     const label=kind==='start'?'ПЕРЕД НАЧАЛОМ НЕДЕЛИ':kind==='morning'?'УТРОМ':'ПОСЛЕ УЖИНА';
-    return `<details class="recipe-next-prep ${kind==='start'?'recipe-prep-start':''} ${kind==='morning'?'recipe-prep-morning':''}"><summary><span class="prep-callout-head"><span aria-hidden="true">↳</span><span><span class="prep-label">${label}</span><strong>${esc(prep.title)}</strong></span></span></summary><div class="recipe-prep-body">${prepSteps(prep)}</div></details>`
+    return `<details class="recipe-next-prep ${kind==='start'?'recipe-prep-start':''} ${kind==='morning'?'recipe-prep-morning':''}"><summary><span class="prep-callout-head"><span aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" focusable="false"><path d="M5 12h12M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span class="prep-label">${label}</span><strong>${esc(prep.title)}</strong></span></span></summary><div class="recipe-prep-body">${prepSteps(prep)}</div></details>`
   }
   function recipeWeeklyPrepBlock(block,kind='midweek'){
     if(!block?.items?.length)return '';
