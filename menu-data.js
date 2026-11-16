@@ -11,6 +11,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Овсянка с греческим йогуртом и мандарином",
+              "image": "meal-day1-breakfast.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -31,6 +32,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Боул с курицей, булгуром и свёклой",
+              "image": "meal-day1-lunch.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -63,6 +65,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Курица в соевом соусе с салатом из пекинской капусты",
+              "image": "meal-day1-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 45 минут всего",
               "ingredients": [
@@ -104,6 +107,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Греческий йогурт с ягодами и хурмой",
+              "image": "meal-day2-breakfast.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -122,6 +126,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Курица с бурым рисом и овощами",
+              "image": "meal-day2-lunch.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -156,6 +161,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Треска с бурым рисом и кремовым соусом из фасоли и шпината",
+              "image": "meal-day2-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 50 минут всего",
               "ingredients": [
@@ -190,6 +196,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Пшённая каша с тыквой, скиром и яблоком",
+              "image": "meal-day3-breakfast.png",
               "portionBase": 1,
               "time": "30 минут",
               "ingredients": [
@@ -213,6 +220,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Треска с бурым рисом и кремовым соусом из фасоли и шпината",
+              "image": "meal-day2-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -239,6 +247,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Пулькоги из свинины с бурым рисом и банчанами",
+              "image": "meal-day3-dinner.png",
               "portionBase": 2,
               "time": "30 минут активно / 45 минут всего",
               "ingredients": [

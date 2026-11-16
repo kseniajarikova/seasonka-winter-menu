@@ -154,3 +154,4 @@
 .prep-return{position:sticky;top:105px;z-index:5;pointer-events:none}.prep-return button{pointer-events:auto;margin:0 0 10px;background:var(--card);box-shadow:var(--shadow)}.prep-return button[hidden]{display:none}.recipe-card{scroll-margin-top:105px}
 
 .ingredient-section h5{margin:12px 0 5px;font-size:.95rem;color:var(--olive)}
+ .recipe-photo{display:block;width:min(100%,520px);aspect-ratio:1;object-fit:cover;border-radius:14px;margin:0 0 16px;box-shadow:0 8px 20px rgba(39,51,41,.1)}
