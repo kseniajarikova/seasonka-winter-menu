@@ -184,7 +184,7 @@ for(const [weekNumber,week] of weeks){
     const rawPoultry=recipe.ingredients.some(item=>/^(?:куриная грудка|куриное филе|филе куриного бедра|фарш из куриного бедра|филе индейки|фарш индейки)/i.test(item));
     if(/\b(?:63|71|74)\s*°/i.test(recipe.steps.join(' ')))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: в шагах осталась внутренняя температура`);
     if(rawPoultry&&!/\d+\s*минут/i.test(recipe.steps.join(' ')))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: для сырой птицы не указано время приготовления`);
-    if(/сметанн(?:ом|ый|ого) соус/i.test(text)&&!/(?:не кипятить|не доводя до бурного кипения|без бурного кипения)/i.test(text))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: нет защиты сметанного соуса от бурного кипения`);
+    if(/сметанн(?:ом|ый|ого) соус/i.test(text)&&!/(?:не кипятить|не доводя до кипения|не доводя до бурного кипения|без бурного кипения)/i.test(text))errors.push(`Неделя ${weekNumber}, ${day.name}, ${recipe.title}: нет защиты сметанного соуса от бурного кипения`);
   }));
 }
 
@@ -196,7 +196,8 @@ if(strings.some(item=>/куриная грудка для супа|фарш ин
 const troutDinner=w1.days[5].meals.find(meal=>meal.slot==='Ужин');
 if(!troutDinner.ingredients.some(item=>/^перловка — 220 г сухой/i.test(item))||!w1.days[4].tomorrowPrep.items.some(item=>/Перловку 220 г залить 900 мл/i.test(item)))errors.push('День 6: вес перловки в рецепте и вечерней заготовке не совпадает');
 const soupDinner=w1.days[4].meals.find(meal=>meal.slot==='Ужин');
-if(soupDinner.ingredients.filter(item=>/^чеснок/i.test(item)).length!==1||soupDinner.ingredients.filter(item=>/^имбирь/i.test(item)).length!==1||soupDinner.ingredients.filter(item=>/^соевый соус/i.test(item)).length!==1)errors.push('День 5: в супе задвоены общие ингредиенты супа и банчанов');
+const soupSections=soupDinner.ingredientSections;
+if(soupSections?.length!==4||soupSections.reduce((sum,section)=>sum+section.count,0)!==soupDinner.ingredients.length)errors.push('День 5: ингредиенты супа, лапши и банчанов должны быть распределены по четырём группам');
 const shrimpLunch=w3.days[3].meals.find(meal=>meal.slot==='Обед');
 if(!shrimpLunch.ingredients.some(item=>/^кимчи-стайл — 100 г/i.test(item))||!w3.days[2].morningPrep.items.some(item=>/100 г оставить отдельно для обеда/i.test(item)))errors.push('Дни 17–18: порция кимчи-стайл не согласована');
 

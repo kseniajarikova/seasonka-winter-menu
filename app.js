@@ -89,10 +89,16 @@
       const cards=d.meals.map((m,mi)=>{
         if(q&&!m.title.toLowerCase().includes(q)&&!m.ingredients.join(' ').toLowerCase().includes(q))return '';
         const recipeId=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[recipeId],servings=m.portionBase*state.people;
-        const ingredients=m.ingredients.flatMap((item,ii)=>splitIngredient(item).map((part,si)=>{
+        const ingredientRows=m.ingredients.map((item,ii)=>splitIngredient(item).map((part,si)=>{
           const id=`${ingredientId(di,mi,ii)}-${si}`,checked=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];
           return `<label class="recipe-ingredient ${checked?'is-selected':''}"><input type="checkbox" data-ingredient="${id}" ${checked?'checked':''}><span>${esc(scaleText(part,state.people))}</span></label>`
-        })).join('');
+        }).join(''));
+        let offset=0;
+        const ingredients=m.ingredientSections?m.ingredientSections.map(({title,count})=>{
+          const rows=ingredientRows.slice(offset,offset+count).join('');
+          offset+=count;
+          return `<section class="ingredient-section"><h5>${esc(title)}</h5>${rows}</section>`;
+        }).join(''):ingredientRows.join('');
         const source=m.source?`<p class="recipe-origin">Эта порция — из <a href="#recipe-${m.source.week}-${m.source.day}-${m.source.meal}" data-source-id="${m.source.week}-${m.source.day}-${m.source.meal}" data-source-week="${m.source.week}">${esc(m.source.label)}</a>. Если готовой порции нет, открой источник и приготовь по нему одну порцию; готовые веса смотри в списке ингредиентов.</p>`:'';
         const prepSources=(m.prepSources?.length?m.prepSources:(m.prepSource?[m.prepSource]:[]));
         const prepSource=prepSources.map(item=>'<p class="recipe-origin">'+esc(item.label)+' — <a href="#'+esc(item.id)+'" data-prep-source="'+esc(item.id)+'">открыть шаг заготовки</a>.</p>').join('');

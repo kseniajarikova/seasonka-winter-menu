@@ -104,7 +104,7 @@ const week1 = [
   {
     day: "Вторник",
     meals: {
-      breakfast: [g("greekYogurt", 150), g("oats", 30), g("berries", 100), g("persimmon", 100), g("pumpkinSeeds", 5)],
+      breakfast: [g("greekYogurt", 150), g("oats", 25), g("berries", 100), g("persimmon", 100), g("pumpkinSeeds", 5)],
       lunch: [g("chickenBreast", 250), g("brownRiceDry", 115), g("pumpkin", 150), g("broccoli", 150), g("edamame", 50), g("napaCabbage", 80), g("gochujang", 10), g("garlic", 4), g("sesameOil", 4), g("sesame", 4), g("oliveOil", 4)],
       dinner: [g("cod", 250), g("whiteBeans", 100), g("brownRiceDry", 70), g("spinach", 50), g("onion", 50), g("garlic", 3), g("oliveOil", 5), g("sesameOil", 2)],
     },
