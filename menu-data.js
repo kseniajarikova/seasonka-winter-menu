@@ -290,6 +290,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Омлет с творогом и шпинатом",
+              "image": "meal-day4-breakfast.png",
               "portionBase": 1,
               "time": "15 минут",
               "ingredients": [
@@ -310,6 +311,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Пулькоги с бурым рисом и банчанами",
+              "image": "meal-day3-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -341,6 +343,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Пибимпап с курицей, тофу и яйцом на буром рисе",
+              "image": "meal-day4-dinner.png",
               "portionBase": 2,
               "time": "10 минут",
               "ingredients": [
@@ -378,6 +381,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Гречка с курицей, яйцом и грибами",
+              "image": "meal-day5-breakfast.png",
               "portionBase": 1,
               "time": "20 минут",
               "ingredients": [
@@ -400,6 +404,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Пибимпап с курицей и яйцом на буром рисе",
+              "image": "meal-day4-dinner.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -435,6 +440,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Корейский суп с курицей и яичной лапшой",
+              "image": "meal-day5-dinner.png",
               "portionBase": 2,
               "time": "20 минут активно / 30 минут всего",
               "ingredients": [
@@ -489,6 +495,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Сырники с ягодами и греческим йогуртом",
+              "image": "meal-day6-breakfast.png",
               "portionBase": 1,
               "time": "20 минут",
               "ingredients": [
@@ -510,6 +517,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Корейский суп с курицей и яичной лапшой",
+              "image": "meal-day5-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -533,6 +541,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Форель с перловкой, фасолью, кремом из творожного сыра и салатом из битых огурцов",
+              "image": "meal-day6-dinner.png",
               "portionBase": 2,
               "time": "20 минут активно / 55 минут всего",
               "ingredients": [
@@ -569,6 +578,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Овсянка на кефире с грушей и скиром",
+              "image": "meal-day7-breakfast.png",
               "portionBase": 1,
               "time": "5 минут подготовки + охлаждение",
               "ingredients": [
@@ -589,6 +599,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Форель с перловкой, фасолью и салатом из битых огурцов",
+              "image": "meal-day6-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -613,6 +624,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Индейка с томатами, фасолью и пастой",
+              "image": "meal-day7-dinner.png",
               "portionBase": 2,
               "time": "20 минут активно / 35 минут всего",
               "ingredients": [
