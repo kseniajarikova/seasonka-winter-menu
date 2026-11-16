@@ -3811,3 +3811,8 @@ window.applyCulinaryAudit();
     ["Кимчи-стайл",shrimpLunch.ingredients.slice(10)]
   ]);
 })();
+
+/* Week 1 preview: later weeks stay out of the published version until release. */
+window.MENU_DATA.lockedWeeks={2:'Будет доступно позже',3:'Будет доступно позже'};
+delete window.MENU_DATA.weeks['2'];
+delete window.MENU_DATA.weeks['3'];
