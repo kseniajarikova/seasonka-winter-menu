@@ -1073,6 +1073,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Омлет с томатами и фетой, цельнозерновой хлеб и яблоко",
+              "image": "meal-week2-day1-breakfast.png",
               "portionBase": 1,
               "time": "15 минут",
               "ingredients": [
@@ -1093,6 +1094,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Индейка с томатами, фасолью и цельнозерновой пастой",
+              "image": "meal-day7-dinner.png",
               "portionBase": 1,
               "time": "20 минут",
               "ingredients": [
@@ -1121,6 +1123,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Куриная грудка с паприкой и картофелем в мундире, брокколи с чесноком и кунжутом",
+              "image": "meal-week2-day1-dinner.png",
               "portionBase": 2,
               "time": "20 минут активно / 45 минут всего",
               "ingredients": [
@@ -1154,6 +1157,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Скир с яблоком, овсяной крошкой и тыквенными семечками",
+              "image": "meal-week2-day2-breakfast.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -1172,6 +1176,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Курица с бурым рисом и брокколи",
+              "image": "meal-week2-day1-dinner.png",
               "portionBase": 1,
               "time": "30 минут",
               "ingredients": [
@@ -1200,6 +1205,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Говяжьи тефтели в томатно-сметанном соусе, пюре из картофеля и цветной капусты, огурцы по-корейски",
+              "image": "meal-week2-day2-dinner.png",
               "portionBase": 2,
               "time": "30 минут активно / 45 минут всего",
               "ingredients": [
@@ -1245,6 +1251,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Запеканка из скира с грушей и корицей",
+              "image": "meal-week2-day3-breakfast.png",
               "portionBase": 1,
               "time": "35 минут",
               "ingredients": [
@@ -1265,6 +1272,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Говяжьи тефтели с перловкой и огурцами по-корейски",
+              "image": "meal-week2-day2-dinner.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -1289,6 +1297,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Свиная вырезка в горчичном соусе с гречкой и запечённой морковью, маринованный дайкон",
+              "image": "meal-week2-day3-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 45 минут всего",
               "ingredients": [
@@ -1326,6 +1335,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Пшённая каша с грушей и корицей",
+              "image": "meal-week2-day4-breakfast.png",
               "portionBase": 1,
               "time": "35–45 минут",
               "ingredients": [
@@ -1346,6 +1356,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Свиная вырезка с гречкой, морковью и дайконом",
+              "image": "meal-week2-day3-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -1370,6 +1381,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Треска в пряной глазури с перловкой и цветной капустой, огурцы с зелёным луком и кунжутом",
+              "image": "meal-week2-day4-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 45 минут всего",
               "ingredients": [
@@ -1408,6 +1420,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Цельнозерновой тост с авокадо, яйцом и скиром",
+              "image": "meal-week2-day5-breakfast.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -1426,6 +1439,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Треска с перловкой и цветной капустой",
+              "image": "meal-week2-day4-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -1454,6 +1468,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Перцы, фаршированные индейкой и бурым рисом, салат из пекинской капусты и огурца",
+              "image": "meal-week2-day5-dinner.png",
               "portionBase": 2,
               "time": "30 минут активно / 55 минут всего",
               "ingredients": [
@@ -1493,6 +1508,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Ржаной тост с копчёным лососем, огурцом и творожным сыром, скир с овсяными хлопьями и грецкими орехами",
+              "image": "meal-week2-day6-breakfast.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -1515,6 +1531,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Фаршированный перец с индейкой, бурым рисом и салатом",
+              "image": "meal-week2-day5-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -1537,6 +1554,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Хек со сметаной и зелёным луком, кукурузной полентой, маринованный дайкон",
+              "image": "meal-week2-day6-dinner.png",
               "portionBase": 2,
               "time": "20 минут активно / 45 минут всего",
               "ingredients": [
@@ -1569,6 +1587,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Кукурузная каша с яйцом пашот и зелёным луком",
+              "image": "meal-week2-day7-breakfast.png",
               "portionBase": 1,
               "time": "20 минут",
               "ingredients": [
@@ -1590,6 +1609,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Хек с кукурузной полентой и маринованным дайконом",
+              "image": "meal-week2-day6-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -1616,6 +1636,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Тофу с гречкой и грибами в соево-чесночной подливе, шпинат-намуль",
+              "image": "meal-week2-day7-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 40 минут всего",
               "ingredients": [
