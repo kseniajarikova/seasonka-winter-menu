@@ -1,6 +1,7 @@
 (()=>{
   'use strict';
   const data=window.MENU_DATA;
+  const oneWeekMode=new URLSearchParams(location.search||'').get('edition')==='week1';
   const CALORIE_BASE=2000;
   const calorieStorageKey='seasonka-calorie-profile';
   const defaultProfile={sex:'female',age:30,height:165,weight:65,activity:'1.375',goal:'maintain'};
@@ -77,9 +78,18 @@
   const savedProfile=readCalorieProfile();
   if(savedProfile&&savedProfile.target){state.calorieProfile=savedProfile;state.calorieTarget=Number(savedProfile.target);state.calorieFactor=state.calorieTarget/CALORIE_BASE}
   function renderSwitch(){
-    $('#weekSwitch').innerHTML=Object.keys(data.weeks).map(Number).map(n=>
+    const availableWeeks=oneWeekMode?[1]:Object.keys(data.weeks).map(Number);
+    $('#weekSwitch').innerHTML=oneWeekMode?'<span class="week-only-label">Первая неделя · 7 дней</span>':availableWeeks.map(n=>
       `<button class="week-btn ${n===state.week?'active':''}" data-week="${n}" aria-pressed="${n===state.week}">Неделя 0${n}</button>`).join('');
     $$('[data-week]').forEach(b=>b.onclick=()=>{state.week=+b.dataset.week;render()})
+  }
+  function renderEditionCopy(){
+    if(!oneWeekMode)return;
+    const setText=(selector,text)=>{const element=$(selector);if(element)element.textContent=text};
+    setText('.hero-copy>p:not(.eyebrow)','Рецепты, покупки и заготовки на первую неделю.');
+    setText('#introTitle','Твой план на первую неделю');
+    setText('.intro-heading>p:last-child','Рассчитай калораж, а затем пользуйся первой неделей: книга сама пересчитает продукты, порции и покупки.');
+    setText('.intro-context summary','О первой неделе и корейских акцентах');
   }
   function renderIntro(){
     const w=current(),days=w.days.length,total=w.days.reduce((a,d)=>a+d.meals.length,0);
@@ -261,9 +271,9 @@
       const day=+recipe.split('-')[2];
       returnButton.textContent='← Вернуться к рецепту · '+data.weeks[week].days[day].name.toLowerCase();
     }
-    history.replaceState(null,'','#'+state.view)
+    history.replaceState(null,'',(location.pathname||'')+(location.search||'')+'#'+state.view)
   }
-  function render(){renderCalorieCalculator();renderSwitch();renderIntro();renderMenu();renderRecipes();renderGroceries();renderPrep();renderIntroContent();renderView()}
+  function render(){renderEditionCopy();renderCalorieCalculator();renderSwitch();renderIntro();renderMenu();renderRecipes();renderGroceries();renderPrep();renderIntroContent();renderView()}
   $$('.view-tab').forEach(b=>b.onclick=()=>{state.view=b.dataset.view;renderView()});
   $$('.topnav a').forEach(a=>a.onclick=e=>{e.preventDefault();state.view=a.dataset.view;renderView();document.querySelector('#'+state.view).scrollIntoView({behavior:'smooth'})});
   $('#prepReturn').onclick=()=>{
