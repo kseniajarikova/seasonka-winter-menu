@@ -1,7 +1,12 @@
 (()=>{
   'use strict';
   const data=window.MENU_DATA;
-  const state={week:1,people:1,view:'menu',query:'',expanded:false,prepReturn:null};
+  const CALORIE_BASE=2000;
+  const calorieStorageKey='seasonka-calorie-profile';
+  const defaultProfile={sex:'female',age:30,height:165,weight:65,activity:'1.375',goal:'maintain'};
+  const activityFactors={1.2:1.2,1.375:1.375,1.55:1.55,1.725:1.725,1.9:1.9};
+  const goalFactors={loss:.85,maintain:1,gain:1.1};
+  const state={week:1,people:1,view:'menu',query:'',expanded:false,prepReturn:null,calorieProfile:null,calorieTarget:CALORIE_BASE,calorieFactor:1};
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const weekNames={1:'Первая неделя',2:'Вторая неделя',3:'Третья неделя'};
@@ -13,26 +18,64 @@
   function splitIngredient(text){return String(text).split(/;\s*/).flatMap(part=>part.split(/,\s+(?=[\p{L}][^,;]{0,55}(?:—\s*\d|\d+(?:[.,]\d+)?\s*(?:г|мл|кг|шт\.?|ст\.?\s*л|ч\.?\s*л)))/u)).map(x=>x.trim()).filter(Boolean)}
   const checkedKey=(week,people)=>`seasonka-week-${week}-people-${people}`;
   const selectionKey=(week,people)=>`seasonka-selected-${week}-people-${people}`;
-  function scaleText(text,people){
-    if(people===1)return text;
-    const numeric=raw=>{const [n,d='1']=raw.replace(',','.').split('/');const value=fractions[raw]??Number(n)/Number(d);return String(Math.round(value*people*10)/10).replace('.',',')};
+  function readCalorieProfile(){
+    try{return JSON.parse(localStorage.getItem(calorieStorageKey)||'null')}catch{return null}
+  }
+  function calculateCalories(profile){
+    const age=Number(profile.age),height=Number(profile.height),weight=Number(profile.weight);
+    const bmr=profile.sex==='male'?10*weight+6.25*height-5*age+5:10*weight+6.25*height-5*age-161;
+    const activity=activityFactors[profile.activity]||1.375;
+    const goal=goalFactors[profile.goal]??1;
+    return Math.max(1200,Math.min(5000,Math.round((bmr*activity*goal)/50)*50));
+  }
+  function formatNumber(value){return Number(value.toFixed(1)).toString().replace('.',',')}
+  function formatFactor(value){return Number(value.toFixed(2)).toString().replace('.',',')}
+  function formatCalories(value){return Math.round(value/50)*50}
+  function calorieMultiplier(){return state.calorieFactor||1}
+  function scaleText(text,people,factor=calorieMultiplier()){
+    if(people===1&&factor===1)return text;
+    const multiplier=people*factor;
+    const scaledValue=raw=>{const [n,d='1']=raw.replace(',','.').split('/');const value=fractions[raw]??Number(n)/Number(d);return String(Math.round(value*multiplier*10)/10).replace('.',',')};
+    const numeric=raw=>scaledValue(raw);
     const counted=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(\s+)(?:(готов\p{L}*)\s+)?(бан\p{L}*|штук\p{L}*|яйц\p{L}*|котлет\p{L}*|порци\p{L}*|зубчик\p{L}*|упак\p{L}*)/giu;
     const nounForms={банка:['банка','банки','банок'],яйцо:['яйцо','яйца','яиц'],котлета:['котлета','котлеты','котлет'],порция:['порция','порции','порций'],зубчик:['зубчик','зубчика','зубчиков'],упаковка:['упаковка','упаковки','упаковок'],штука:['штука','штуки','штук']};
     const pluralized=String(text).replace(counted,(whole,raw,space,adjective,unit)=>{
-      const value=Math.round((fractions[raw]??Number(raw.replace(',','.').split('/')[0])/Number(raw.includes('/')?raw.split('/')[1]:1))*people*10)/10;
+      const value=Math.round((fractions[raw]??Number(raw.replace(',','.').split('/')[0])/Number(raw.includes('/')?raw.split('/')[1]:1))*multiplier*10)/10;
       const lower=unit.toLowerCase(),key=lower.startsWith('бан')?'банка':lower.startsWith('яйц')?'яйцо':lower.startsWith('котлет')?'котлета':lower.startsWith('порци')?'порция':lower.startsWith('зубчик')?'зубчик':lower.startsWith('упак')?'упаковка':lower.startsWith('штук')?'штука':lower;
       const forms=nounForms[key];if(!forms)return `${numeric(raw)}${space}${adjective?adjective+' ':''}${unit}`;
       const integer=Math.round(value),last2=integer%100,last=integer%10,index=!Number.isInteger(value)||last2>=11&&last2<=14?2:last===1?0:last>=2&&last<=4?1:2;
       const adj=adjective?((index===0?'готовая':index===1?'готовые':'готовых')+' '):'';
       return `${String(value).replace('.',',')}${space}${adj}${forms[index]}`;
     });
-    const quantity=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(?=\s*(?:(?:мл|кг|г|л)(?![\p{L}\p{N}])|шт\.?(?![\p{L}\p{N}])|ст\.?\s*л|ч\.?\s*л|пуч\p{L}*|веточ\p{L}*|кусоч\p{L}*))/gu;
-    return pluralized.replace(quantity,(match,raw,index,whole)=>/(?:бан\p{L}*|упак\p{L}*)\s+по\s*$/iu.test(whole.slice(Math.max(0,index-20),index))?match:numeric(raw))
+    const units='(?:(?:мл|кг|г|л)(?![\\p{L}\\p{N}])|шт\\.?(?![\\p{L}\\p{N}])|ст\\.?\\s*л|ч\\.?\\s*л|стол\\p{L}*\\s+ложк\\p{L}*|чай\\p{L}*\\s+ложк\\p{L}*|ложк\\p{L}*|пуч\\p{L}*|веточ\\p{L}*|кусоч\\p{L}*)';
+    const range=new RegExp('(?<![\\d/.,])(\\d+(?:[.,]\\d+)?|[½¼¾⅓⅔])\\s*[–-]\\s*(\\d+(?:[.,]\\d+)?|[½¼¾⅓⅔])(?=\\s*'+units+')','gu');
+    const ranged=pluralized.replace(range,(match,left,right)=>`${scaledValue(left)}–${scaledValue(right)}`);
+    const quantity=new RegExp('(?<![\\d/.,–-])(\\d+\\/\\d+|\\d+(?:[.,]\\d+)?|[½¼¾⅓⅔])(?=\\s*'+units+')','gu');
+    return ranged.replace(quantity,(match,raw,index,whole)=>/(?:бан\p{L}*|упак\p{L}*)\s+по\s*$/iu.test(whole.slice(Math.max(0,index-20),index))?match:scaledValue(raw))
   }
   function loadJSON(key,fallback={}){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch{return fallback}}
   function saveChoice(choice){localStorage.setItem(choiceKey(state.week),JSON.stringify(choice))}
   function current(){return data.weeks[state.week]}
   function currentChoice(){return loadJSON(choiceKey(state.week),{recipes:{},ingredients:{},excluded:{}})}
+  function renderCalorieCalculator(){
+    const profile=state.calorieProfile||defaultProfile;
+    const target=state.calorieTarget;
+    const factor=calorieMultiplier();
+    const applied=!!state.calorieProfile;
+    $('#calorieCalculator').innerHTML=`<div class="calorie-copy"><p class="eyebrow">ШАГ 01 · НАСТРОЙ КАЛОРАЖ</p><h2 id="calorieTitle">Сначала — твой ориентир</h2><p>Заполни короткую анкету. Калькулятор рассчитает дневной калораж, а книга автоматически пересчитает количества продуктов и порций.</p></div><form class="calorie-form" id="calorieForm"><label><span>Пол</span><select name="sex"><option value="female" ${profile.sex==='female'?'selected':''}>Женщина</option><option value="male" ${profile.sex==='male'?'selected':''}>Мужчина</option></select></label><label><span>Возраст, лет</span><input name="age" type="number" min="14" max="90" value="${esc(profile.age)}" required></label><label><span>Рост, см</span><input name="height" type="number" min="120" max="230" value="${esc(profile.height)}" required></label><label><span>Вес, кг</span><input name="weight" type="number" min="35" max="250" step="0.1" value="${esc(profile.weight)}" required></label><label><span>Активность</span><select name="activity"><option value="1.2" ${profile.activity==='1.2'?'selected':''}>Минимальная</option><option value="1.375" ${profile.activity==='1.375'?'selected':''}>Низкая</option><option value="1.55" ${profile.activity==='1.55'?'selected':''}>Средняя</option><option value="1.725" ${profile.activity==='1.725'?'selected':''}>Высокая</option><option value="1.9" ${profile.activity==='1.9'?'selected':''}>Очень высокая</option></select></label><label><span>Цель</span><select name="goal"><option value="loss" ${profile.goal==='loss'?'selected':''}>Снижение веса</option><option value="maintain" ${profile.goal==='maintain'?'selected':''}>Поддержание</option><option value="gain" ${profile.goal==='gain'?'selected':''}>Набор</option></select></label><button type="submit" class="calorie-submit">Рассчитать и применить</button></form><div class="calorie-result" aria-live="polite"><div><span class="calorie-result-label">${applied?'Твой целевой калораж':'Пока базовый ориентир книги'}</span><strong>${formatCalories(target)} <small>ккал / день</small></strong></div><div class="calorie-result-meta">Все количества в книге сейчас умножаются на <b>×${formatFactor(factor)}</b> от базового меню около 2000 ккал.</div></div><p class="calorie-note">Это ориентировочный расчёт, а не медицинское назначение. При изменении данных просто нажми кнопку ещё раз.</p>`;
+    $('#calorieForm').onsubmit=e=>{
+      e.preventDefault();
+      const form=new FormData(e.currentTarget);
+      const next={sex:String(form.get('sex')),age:Number(form.get('age')),height:Number(form.get('height')),weight:Number(form.get('weight')),activity:String(form.get('activity')),goal:String(form.get('goal'))};
+      const nextTarget=calculateCalories(next);
+      state.calorieProfile=next;state.calorieTarget=nextTarget;state.calorieFactor=nextTarget/CALORIE_BASE;
+      localStorage.setItem(calorieStorageKey,JSON.stringify({...next,target:nextTarget}));
+      render();
+      $('#calorieCalculator').scrollIntoView({behavior:'smooth',block:'start'});
+    };
+  }
+  const savedProfile=readCalorieProfile();
+  if(savedProfile&&savedProfile.target){state.calorieProfile=savedProfile;state.calorieTarget=Number(savedProfile.target);state.calorieFactor=state.calorieTarget/CALORIE_BASE}
   function renderSwitch(){
     $('#weekSwitch').innerHTML=Object.keys(data.weeks).map(Number).map(n=>
       `<button class="week-btn ${n===state.week?'active':''}" data-week="${n}" aria-pressed="${n===state.week}">Неделя 0${n}</button>`).join('');
@@ -42,7 +85,7 @@
     const w=current(),days=w.days.length,total=w.days.reduce((a,d)=>a+d.meals.length,0);
     const art=state.week===1?'cod.jpg':state.week===2?'chicken.jpg':'cover.jpg';
     const mealWord=total%10===1&&total%100!==11?'блюдо':total%10>=2&&total%10<=4&&!(total%100>=12&&total%100<=14)?'блюда':'блюд';
-    $('#weekIntro').innerHTML=`<div><h2>${weekNames[state.week]}</h2></div><div class="week-visual"><img src="${art}" alt="Иллюстрация к меню недели"></div>`;
+    $('#weekIntro').innerHTML=`<div><h2>${weekNames[state.week]}</h2><p>${formatCalories(state.calorieTarget)} ккал / день · количества пересчитаны под твой ориентир</p></div><div class="week-visual"><img src="${art}" alt="Иллюстрация к меню недели"></div>`;
     $('#recipeCount').textContent=total;
     const baseCount=w.groceries.reduce((a,g)=>a+g.items.length,0),choice=currentChoice();
     const picked=Object.keys(choice.recipes).filter(k=>choice.recipes[k]).length+Object.keys(choice.ingredients).filter(k=>choice.ingredients[k]).length;
@@ -89,7 +132,7 @@
     const week=current(),dayContent=week.days.map((d,di)=>{
       const cards=d.meals.map((m,mi)=>{
         if(q&&!m.title.toLowerCase().includes(q)&&!m.ingredients.join(' ').toLowerCase().includes(q))return '';
-        const recipeId=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[recipeId],servings=m.portionBase*state.people;
+        const recipeId=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[recipeId],servings=m.portionBase*state.people*calorieMultiplier();
         const ingredientRows=m.ingredients.map((item,ii)=>splitIngredient(item).map((part,si)=>{
           const id=`${ingredientId(di,mi,ii)}-${si}`,checked=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];
           return `<label class="recipe-ingredient ${checked?'is-selected':''}"><input type="checkbox" data-ingredient="${id}" ${checked?'checked':''}><span>${esc(scaleText(part,state.people))}</span></label>`
@@ -104,7 +147,8 @@
         const prepSources=(m.prepSources?.length?m.prepSources:(m.prepSource?[m.prepSource]:[]));
         const prepSource=prepSources.map(item=>'<p class="recipe-origin">'+esc(item.label)+' — <a href="#'+esc(item.id)+'" data-prep-source="'+esc(item.id)+'">открыть шаг заготовки</a>.</p>').join('');
         const photo=m.image?`<img class="recipe-photo" src="${esc(m.image)}" alt="${esc(m.title)}" loading="lazy">`:'';
-        return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servings} ${plural(servings,'порция','порции','порций')}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${photo}${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(scaleText(x,state.people))}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(scaleText(x,state.people))}</p>`).join('')}</div>`:''}</div></div></div></details>`
+        const servingAmount=formatNumber(servings),servingWord=servings===1?'порция':servings>1&&servings<5?'порции':'порций';
+        return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servingAmount} ${servingWord}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${photo}${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(scaleText(x,state.people))}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(scaleText(x,state.people))}</p>`).join('')}</div>`:''}</div></div></div></details>`
       }).join('');
       const weeklyPrep=!q&&di===2&&week.prepBlocks?.[1]?recipeWeeklyPrepBlock(week.prepBlocks[1]):'';
       const endPrep=!q&&di===6&&week.endPrepBlock?recipeWeeklyPrepBlock(week.endPrepBlock,'end'):'';
@@ -160,7 +204,7 @@
   }
   function renderGroceries(){
     const w=current(),key=checkedKey(state.week,state.people),checked=loadJSON(key,{}),selected=selectedIngredients(),selectionChecks=loadJSON(selectionKey(state.week,state.people),{});
-    $('#listSummary').innerHTML=`<strong>Список на ${state.people} ${peopleWord(state.people)}</strong><span>количества × ${state.people} от базового плана · <button class="quiet-button" id="clearChecks">Снять отметки</button></span>`;
+    $('#listSummary').innerHTML=`<strong>Список на ${state.people} ${peopleWord(state.people)}</strong><span>${formatCalories(state.calorieTarget)} ккал · количества × ${formatFactor(state.people*calorieMultiplier())} от базового плана · <button class="quiet-button" id="clearChecks">Снять отметки</button></span>`;
     $('#clearChecks').onclick=()=>{localStorage.removeItem(key);localStorage.removeItem(selectionKey(state.week,state.people));renderGroceries()};
     $('#selectedShopping').innerHTML=selected.length?`<div class="selected-shopping-head"><div><p class="eyebrow">ТВОЙ ВЫБОР</p><h3>Ингредиенты выбранных рецептов <span>${selected.length}</span></h3></div><button class="quiet-button" id="clearSelection">Очистить выбор</button></div><p class="selected-note">Эти продукты добавлены сюда автоматически. Совпадения также подсвечены в общем списке ниже.</p><div class="selected-items">${selected.map(item=>`<label class="selected-item ${selectionChecks[item.id]?'checked':''}"><input type="checkbox" data-selected-check="${item.id}" ${selectionChecks[item.id]?'checked':''}><span><strong>${esc(scaleText(item.item,state.people))}</strong><small>${esc(item.day)} · ${esc(item.recipe)}</small></span></label>`).join('')}</div>`:'';
     const clearSelection=$('#clearSelection');if(clearSelection)clearSelection.onclick=()=>{localStorage.removeItem(choiceKey(state.week));localStorage.removeItem(selectionKey(state.week,state.people));renderRecipes();renderGroceries();renderIntro()};
@@ -219,7 +263,7 @@
     }
     history.replaceState(null,'','#'+state.view)
   }
-  function render(){renderSwitch();renderIntro();renderMenu();renderRecipes();renderGroceries();renderPrep();renderIntroContent();renderView()}
+  function render(){renderCalorieCalculator();renderSwitch();renderIntro();renderMenu();renderRecipes();renderGroceries();renderPrep();renderIntroContent();renderView()}
   $$('.view-tab').forEach(b=>b.onclick=()=>{state.view=b.dataset.view;renderView()});
   $$('.topnav a').forEach(a=>a.onclick=e=>{e.preventDefault();state.view=a.dataset.view;renderView();document.querySelector('#'+state.view).scrollIntoView({behavior:'smooth'})});
   $('#prepReturn').onclick=()=>{
