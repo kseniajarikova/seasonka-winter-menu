@@ -3835,11 +3835,6 @@ window.applyCulinaryAudit();
   ]);
 })();
 
-/* Week 1 preview: later weeks stay out of the published version until release. */
-window.MENU_DATA.lockedWeeks={2:'Будет доступно позже',3:'Будет доступно позже'};
-delete window.MENU_DATA.weeks['2'];
-delete window.MENU_DATA.weeks['3'];
-
 /* Recipe clarity pass: make vegetable prep explicit in every week-one card. */
 (()=>{
   const week=window.MENU_DATA.weeks['1'];

@@ -5,7 +5,6 @@
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const weekNames={1:'Первая неделя',2:'Вторая неделя',3:'Третья неделя'};
-  const lockedWeeks=data.lockedWeeks||{2:'Будет доступно позже',3:'Будет доступно позже'};
   const peopleSelect=$('#peopleSelect');
   const fractions={'½':.5,'¼':.25,'¾':.75,'⅓':1/3,'⅔':2/3};
   const choiceKey=week=>`seasonka-choice-${week}`;
@@ -35,10 +34,8 @@
   function current(){return data.weeks[state.week]}
   function currentChoice(){return loadJSON(choiceKey(state.week),{recipes:{},ingredients:{},excluded:{}})}
   function renderSwitch(){
-    const buttons=[1,2,3].map(n=>lockedWeeks[n]
-      ?`<button class="week-btn week-btn-locked" type="button" disabled aria-disabled="true" title="${esc(lockedWeeks[n])}">Неделя 0${n}<small>Позже</small></button>`
-      :`<button class="week-btn ${n===state.week?'active':''}" data-week="${n}" aria-pressed="${n===state.week}">Неделя 0${n}</button>`).join('');
-    $('#weekSwitch').innerHTML=buttons+'<span class="week-switch-note">Недели 2–3 будут доступны позже</span>';
+    $('#weekSwitch').innerHTML=Object.keys(data.weeks).map(Number).map(n=>
+      `<button class="week-btn ${n===state.week?'active':''}" data-week="${n}" aria-pressed="${n===state.week}">Неделя 0${n}</button>`).join('');
     $$('[data-week]').forEach(b=>b.onclick=()=>{state.week=+b.dataset.week;render()})
   }
   function renderIntro(){
