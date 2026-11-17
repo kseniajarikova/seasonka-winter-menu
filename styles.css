@@ -76,6 +76,15 @@
 }
 @media(max-width:360px){.recipe-card>summary{grid-template-columns:58px minmax(0,1fr) 20px;gap:4px 7px;}.recipe-card>summary>.slot{font-size:8px;}.recipe-body{padding-left:65px;}}
 
+/* Calorie calculator: the book starts with one clear personal target. */
+.calorie-calculator{max-width:1120px;margin:0 auto 22px;padding:25px 26px 23px;background:linear-gradient(135deg,#f0f3e9,#f8f7f0 58%,#eef1f5);border:1px solid #dbe3d5;border-radius:17px;box-shadow:0 7px 24px rgba(39,51,41,.05)}
+.calorie-copy{max-width:680px}.calorie-copy h2{margin:0 0 6px;font:500 29px/1.2 var(--serif);letter-spacing:-.02em}.calorie-copy p:not(.eyebrow){margin:0;color:#68736a;font-size:13px;line-height:1.6}
+.calorie-form{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;margin:19px 0 14px}.calorie-form label{display:grid;gap:5px;color:#617060;font-size:10px;font-weight:700}.calorie-form input,.calorie-form select{width:100%;min-width:0;height:42px;padding:8px 10px;border:1px solid #d5ddd0;border-radius:9px;background:rgba(255,255,255,.86);font:600 12px var(--sans);color:var(--ink)}.calorie-form input:focus,.calorie-form select:focus{outline:3px solid rgba(83,108,84,.18);border-color:var(--olive)}.calorie-submit{grid-column:span 2;align-self:end;min-height:42px;border:0;border-radius:9px;background:var(--olive);color:#fff;font:700 11px var(--sans);cursor:pointer;padding:9px 14px}.calorie-submit:hover{background:#405741}
+.calorie-result{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 15px;background:rgba(255,255,255,.7);border:1px solid #dce5d6;border-radius:11px}.calorie-result>div:first-child{display:grid;gap:2px}.calorie-result-label{color:#778477;font-size:10px;text-transform:uppercase;letter-spacing:.08em}.calorie-result strong{font:500 24px var(--serif);color:var(--ink)}.calorie-result strong small{font:600 11px var(--sans);color:#6e796f}.calorie-result-meta{max-width:560px;color:#68736a;font-size:11px;line-height:1.45;text-align:right}.calorie-result-meta b{color:var(--olive)}.calorie-note{margin:9px 0 0;color:#8a9287;font-size:10px;line-height:1.45}
+@media(max-width:1180px){.calorie-calculator{margin-left:24px;margin-right:24px}}
+@media(max-width:760px){.calorie-calculator{margin:0 16px 18px;padding:19px 16px}.calorie-copy h2{font-size:25px}.calorie-copy p:not(.eyebrow){font-size:12px}.calorie-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}.calorie-form label:nth-child(5),.calorie-form label:nth-child(6){grid-column:span 2}.calorie-submit{grid-column:1/-1;min-height:46px}.calorie-result{display:grid;gap:7px}.calorie-result-meta{text-align:left;max-width:none}}
+@media(max-width:420px){.calorie-calculator{margin-left:12px;margin-right:12px}.calorie-form{grid-template-columns:1fr}.calorie-form label:nth-child(5),.calorie-form label:nth-child(6){grid-column:auto}.calorie-form input,.calorie-form select{height:44px}.calorie-result strong{font-size:22px}}
+
 
 
 /* Mobile menu: keep each meal label aligned with its recipe title. */
