@@ -1944,7 +1944,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Курица с грибами в сметанном соусе и перловкой, маринованный дайкон",
-              "image": "meal-week3-day1-dinner.png",
+              "image": "meal-week3-day3-breakfast.png",
               "portionBase": 2,
               "time": "25 минут активно / 45 минут всего",
               "ingredients": [
@@ -1975,7 +1975,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Греческий йогурт с хурмой, мюсли и грецкими орехами",
-              "image": "meal-week3-day2-breakfast.png",
+              "image": "meal-week3-day1-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2022,7 +2022,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Котлета из индейки с гречкой и морковью по-корейски",
-              "image": "meal-week3-day2-dinner.png",
+              "image": "meal-week3-day2-breakfast.png",
               "portionBase": 2,
               "time": "25 минут активно / 35 минут всего",
               "ingredients": [
@@ -2055,7 +2055,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Пшённая каша с тыквой, скиром и яблоком",
-              "image": "meal-week3-day3-breakfast.png",
+              "image": "meal-week3-day2-dinner.png",
               "portionBase": 1,
               "time": "30 минут",
               "ingredients": [
