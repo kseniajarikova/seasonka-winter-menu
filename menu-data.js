@@ -1885,6 +1885,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Шакшука с цельнозерновым хлебом, скир с овсянкой и яблоком",
+              "image": "meal-week3-day1-breakfast.png",
               "portionBase": 1,
               "time": "20 минут",
               "ingredients": [
@@ -1910,6 +1911,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Тофу с гречкой, грибами и шпинатом",
+              "image": "meal-week2-day7-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -1942,6 +1944,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Курица с грибами в сметанном соусе и перловкой, маринованный дайкон",
+              "image": "meal-week3-day1-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 45 минут всего",
               "ingredients": [
@@ -1972,6 +1975,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Греческий йогурт с хурмой, мюсли и грецкими орехами",
+              "image": "meal-week3-day2-breakfast.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -1989,6 +1993,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Курица с грибами и перловкой",
+              "image": "meal-week3-day1-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2017,6 +2022,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Котлета из индейки с гречкой и морковью по-корейски",
+              "image": "meal-week3-day2-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 35 минут всего",
               "ingredients": [
@@ -2049,6 +2055,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Пшённая каша с тыквой, скиром и яблоком",
+              "image": "meal-week3-day3-breakfast.png",
               "portionBase": 1,
               "time": "30 минут",
               "ingredients": [
@@ -2069,6 +2076,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Котлета из индейки с гречкой и морковью по-корейски",
+              "image": "meal-week3-day2-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2091,6 +2099,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Креветки с рисовой лапшой, бок-чоем и имбирём, кимчи из пекинской капусты",
+              "image": "meal-week3-day3-dinner.png",
               "portionBase": 2,
               "time": "25 минут активно / 35 минут всего",
               "ingredients": [
@@ -2127,6 +2136,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Бутерброд с форелью и огурцом, скир с овсянкой и яблоком",
+              "image": "meal-week3-day4-breakfast.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2149,6 +2159,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Креветки с рисовой лапшой и бок-чоем",
+              "image": "meal-week3-day3-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2179,6 +2190,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Запечённая свиная корейка с репой, морковью и бурым рисом, огурцы с кунжутом",
+              "image": "meal-week3-day4-dinner.png",
               "portionBase": 2,
               "time": "20 минут активно / 50 минут всего",
               "ingredients": [
@@ -2212,6 +2224,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Чиа-пудинг со скиром, мандарином, овсянкой и яблоком",
+              "image": "meal-week3-day5-breakfast.png",
               "portionBase": 1,
               "time": "5 минут подготовки + охлаждение",
               "ingredients": [
@@ -2232,6 +2245,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Свиная корейка с репой, морковью, бурым рисом и свежим огуречным салатом",
+              "image": "meal-week3-day4-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2259,6 +2273,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Картофельная запеканка с говядиной и грибами, пекинская капуста с зелёным луком и кунжутом",
+              "image": "meal-week3-day5-dinner.png",
               "portionBase": 2,
               "time": "30 минут активно / 60 минут всего",
               "ingredients": [
@@ -2292,6 +2307,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Кукурузные оладьи с ягодами, скир с овсянкой и яблоком",
+              "image": "meal-week3-day6-breakfast.png",
               "portionBase": 1,
               "time": "20 минут",
               "ingredients": [
@@ -2316,6 +2332,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Картофельная запеканка с говядиной и грибами, салат",
+              "image": "meal-week3-day5-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2337,6 +2354,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Треска с бурым рисом и шпинатом-намуль",
+              "image": "meal-week3-day6-dinner.png",
               "portionBase": 2,
               "time": "20 минут активно / 45 минут всего",
               "ingredients": [
@@ -2369,6 +2387,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Тост с тунцовой намазкой и яйцом, скир с овсянкой и яблоком",
+              "image": "meal-week3-day7-breakfast.png",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -2392,6 +2411,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Треска с бататом и шпинатом-намуль",
+              "image": "meal-week3-day6-dinner.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2416,6 +2436,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Говядина с черносливом, репой, сельдереем и перловкой, маринованный дайкон",
+              "image": "meal-week3-day7-dinner.png",
               "portionBase": 2,
               "time": "30 минут активно / 2 часа 30 минут всего",
               "ingredients": [
@@ -3834,11 +3855,6 @@ window.applyCulinaryAudit();
     ["Кимчи-стайл",shrimpLunch.ingredients.slice(10)]
   ]);
 })();
-
-/* Week 1 preview: later weeks stay out of the published version until release. */
-window.MENU_DATA.lockedWeeks={2:'Будет доступно позже',3:'Будет доступно позже'};
-delete window.MENU_DATA.weeks['2'];
-delete window.MENU_DATA.weeks['3'];
 
 /* Recipe clarity pass: make vegetable prep explicit in every week-one card. */
 (()=>{

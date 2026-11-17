@@ -5,7 +5,7 @@
   const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const weekNames={1:'Первая неделя',2:'Вторая неделя',3:'Третья неделя'};
-  const lockedWeeks=data.lockedWeeks||{2:'Будет доступно позже',3:'Будет доступно позже'};
+  const lockedWeeks=data.lockedWeeks||{};
   const peopleSelect=$('#peopleSelect');
   const fractions={'½':.5,'¼':.25,'¾':.75,'⅓':1/3,'⅔':2/3};
   const choiceKey=week=>`seasonka-choice-${week}`;
