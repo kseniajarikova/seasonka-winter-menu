@@ -275,6 +275,14 @@ button,input,select{font-family:var(--sans)}
 .recipe-next-prep>summary::after,.recipe-weekly-prep>summary::after{color:var(--purple)}
 .recipe-weekly-prep{background:var(--blue-soft);border-color:#cfe8f2}
 .recipe-weekly-prep-body{color:#55596b}
+.prep-reference{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:4px 12px;margin:0 0 14px;padding:13px 16px;border:1px solid #cfe8f2;border-left:3px solid var(--purple);border-radius:11px;background:var(--blue-soft);color:var(--ink);text-decoration:none}
+.prep-reference:hover{border-color:var(--purple);background:#edf0ff}
+.prep-reference .prep-kicker{grid-column:1/-1;color:var(--purple);font-size:8px;font-weight:700;letter-spacing:.13em}
+.prep-reference strong{font:500 16px var(--serif);min-width:0}
+.prep-reference-action{color:var(--purple-dark);font-size:10px;font-weight:700;white-space:nowrap}
+.prep-reference-start{background:#f1f0ff;border-color:#e0dafd}
+.menu-prep-row .prep-reference{margin:0;border-radius:0;border-width:0 0 0 3px;background:transparent}
+.menu-prep-row .prep-reference:hover{background:#f1f0ff}
 footer{border-color:var(--line);color:#8a8b9b}
 footer>a:last-child{color:var(--purple)}
 
@@ -290,6 +298,10 @@ footer>a:last-child{color:var(--purple)}
   .recipe-card summary{min-height:62px}
   .recipe-name{line-height:1.28}
   .recipe-photo{width:100%;max-width:none;border-radius:12px}
+  .prep-reference{grid-template-columns:1fr auto;gap:4px 10px;padding:12px 13px}
+  .prep-reference .prep-kicker{grid-column:1/-1}
+  .prep-reference strong{font-size:15px;line-height:1.25}
+  .prep-reference-action{font-size:9px;text-align:right}
   .prep-card,.note-card{border-radius:13px}
 }
 
