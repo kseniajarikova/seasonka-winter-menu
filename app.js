@@ -42,7 +42,14 @@
       const [numerator,denominator='1']=raw.replace(',','.').split('/');
       return fractions[raw]??Number(numerator)/Number(denominator);
     };
-    return String(text).replace(quantity,(match,left,right,space,adjective,unit,index,whole)=>{
+    const dimensions=new RegExp('(?<![\\d/.,–-])('+number+')(?:\\s*[–-]\\s*('+number+'))?\\s*(см|час(?:а|ов)?)(?![\\p{L}\\p{N}])','giu');
+    const instructions=String(text).replace(dimensions,(match,left,right,unit)=>{
+      if(!/[.,]/.test(left+(right||'')))return match;
+      const conversion=unit.toLowerCase()==='см'?10:60;
+      const amount=right?`${formatNumber(numeric(left)*conversion)}–${formatNumber(numeric(right)*conversion)}`:formatNumber(numeric(left)*conversion);
+      return `${amount} ${conversion===10?'мм':'минут'}`;
+    });
+    return instructions.replace(quantity,(match,left,right,space,adjective,unit,index,whole)=>{
       const lower=unit.toLowerCase();
       const conversion=lower==='кг'||lower==='л'?1000:1;
       const packageSize=/(?:бан\p{L}*|упак\p{L}*)\s+по\s*$/iu.test(whole.slice(Math.max(0,index-30),index));
