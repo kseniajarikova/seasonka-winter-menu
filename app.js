@@ -29,30 +29,36 @@
     const goal=goalFactors[profile.goal]??1;
     return Math.max(1200,Math.min(5000,Math.round((bmr*activity*goal)/50)*50));
   }
-  function formatNumber(value){return Number(value.toFixed(1)).toString().replace('.',',')}
-  function formatFactor(value){return Number(value.toFixed(2)).toString().replace('.',',')}
+  function formatNumber(value){return String(Math.round(value))}
+  function formatQuantity(value){return value>0&&value<0.5?'менее 1':formatNumber(value)}
   function formatCalories(value){return Math.round(value/50)*50}
   function calorieMultiplier(){return state.calorieFactor||1}
   function scaleText(text,people,factor=calorieMultiplier()){
-    if(people===1&&factor===1)return text;
     const multiplier=people*factor;
-    const scaledValue=raw=>{const [n,d='1']=raw.replace(',','.').split('/');const value=fractions[raw]??Number(n)/Number(d);return String(Math.round(value*multiplier*10)/10).replace('.',',')};
-    const numeric=raw=>scaledValue(raw);
-    const counted=/(?<![\d/.,])(\d+\/\d+|\d+(?:[.,]\d+)?|[½¼¾⅓⅔])(\s+)(?:(готов\p{L}*)\s+)?(бан\p{L}*|штук\p{L}*|яйц\p{L}*|котлет\p{L}*|порци\p{L}*|зубчик\p{L}*|упак\p{L}*)/giu;
+    const number='(?:\\d+\\/\\d+|\\d+(?:[.,]\\d+)?|[½¼¾⅓⅔])';
+    const quantity=new RegExp('(?<![\\d/.,–-])('+number+')(?:\\s*[–-]\\s*('+number+'))?(\\s*)(?:(готов\\p{L}*)\\s+)?(мл|кг|г|л|шт\\.?|ст\\.?\\s*л\\.?|ч\\.?\\s*л\\.?|стол\\p{L}*\\s+ложк\\p{L}*|чай\\p{L}*\\s+ложк\\p{L}*|ложк\\p{L}*|пуч\\p{L}*|веточ\\p{L}*|кусоч\\p{L}*|бан\\p{L}*|штук\\p{L}*|яйц\\p{L}*|котлет\\p{L}*|порци\\p{L}*|зубчик\\p{L}*|упак\\p{L}*)(?![\\p{L}\\p{N}])','giu');
     const nounForms={банка:['банка','банки','банок'],яйцо:['яйцо','яйца','яиц'],котлета:['котлета','котлеты','котлет'],порция:['порция','порции','порций'],зубчик:['зубчик','зубчика','зубчиков'],упаковка:['упаковка','упаковки','упаковок'],штука:['штука','штуки','штук']};
-    const pluralized=String(text).replace(counted,(whole,raw,space,adjective,unit)=>{
-      const value=Math.round((fractions[raw]??Number(raw.replace(',','.').split('/')[0])/Number(raw.includes('/')?raw.split('/')[1]:1))*multiplier*10)/10;
-      const lower=unit.toLowerCase(),key=lower.startsWith('бан')?'банка':lower.startsWith('яйц')?'яйцо':lower.startsWith('котлет')?'котлета':lower.startsWith('порци')?'порция':lower.startsWith('зубчик')?'зубчик':lower.startsWith('упак')?'упаковка':lower.startsWith('штук')?'штука':lower;
-      const forms=nounForms[key];if(!forms)return `${numeric(raw)}${space}${adjective?adjective+' ':''}${unit}`;
-      const integer=Math.round(value),last2=integer%100,last=integer%10,index=!Number.isInteger(value)||last2>=11&&last2<=14?2:last===1?0:last>=2&&last<=4?1:2;
-      const adj=adjective?((index===0?'готовая':index===1?'готовые':'готовых')+' '):'';
-      return `${String(value).replace('.',',')}${space}${adj}${forms[index]}`;
+    const numeric=raw=>{
+      const [numerator,denominator='1']=raw.replace(',','.').split('/');
+      return fractions[raw]??Number(numerator)/Number(denominator);
+    };
+    return String(text).replace(quantity,(match,left,right,space,adjective,unit,index,whole)=>{
+      const lower=unit.toLowerCase();
+      const conversion=lower==='кг'||lower==='л'?1000:1;
+      const packageSize=/(?:бан\p{L}*|упак\p{L}*)\s+по\s*$/iu.test(whole.slice(Math.max(0,index-30),index));
+      const scale=conversion*(packageSize?1:multiplier);
+      const first=numeric(left)*scale,last=right?numeric(right)*scale:first;
+      const roundedFirst=Math.round(first),roundedLast=Math.round(last);
+      let amount=formatQuantity(first);
+      if(right&&roundedFirst!==roundedLast){
+        amount=roundedFirst===0?`до ${formatNumber(last)}`:`${formatNumber(first)}–${formatNumber(last)}`;
+      }
+      const key=lower.startsWith('бан')?'банка':lower.startsWith('яйц')?'яйцо':lower.startsWith('котлет')?'котлета':lower.startsWith('порци')?'порция':lower.startsWith('зубчик')?'зубчик':lower.startsWith('упак')?'упаковка':lower.startsWith('штук')?'штука':lower;
+      const forms=nounForms[key];
+      const displayUnit=lower==='кг'?'г':lower==='л'?'мл':forms?plural(roundedLast||2,...forms):unit;
+      const displayAdjective=adjective?(roundedLast===0?'готовой':plural(roundedLast,'готовая','готовые','готовых'))+' ':'';
+      return `${amount}${space||' '}${displayAdjective}${displayUnit}`;
     });
-    const units='(?:(?:мл|кг|г|л)(?![\\p{L}\\p{N}])|шт\\.?(?![\\p{L}\\p{N}])|ст\\.?\\s*л|ч\\.?\\s*л|стол\\p{L}*\\s+ложк\\p{L}*|чай\\p{L}*\\s+ложк\\p{L}*|ложк\\p{L}*|пуч\\p{L}*|веточ\\p{L}*|кусоч\\p{L}*)';
-    const range=new RegExp('(?<![\\d/.,])(\\d+(?:[.,]\\d+)?|[½¼¾⅓⅔])\\s*[–-]\\s*(\\d+(?:[.,]\\d+)?|[½¼¾⅓⅔])(?=\\s*'+units+')','gu');
-    const ranged=pluralized.replace(range,(match,left,right)=>`${scaledValue(left)}–${scaledValue(right)}`);
-    const quantity=new RegExp('(?<![\\d/.,–-])(\\d+\\/\\d+|\\d+(?:[.,]\\d+)?|[½¼¾⅓⅔])(?=\\s*'+units+')','gu');
-    return ranged.replace(quantity,(match,raw,index,whole)=>/(?:бан\p{L}*|упак\p{L}*)\s+по\s*$/iu.test(whole.slice(Math.max(0,index-20),index))?match:scaledValue(raw))
   }
   function loadJSON(key,fallback={}){try{return JSON.parse(localStorage.getItem(key)||'null')||fallback}catch{return fallback}}
   function saveChoice(choice){localStorage.setItem(choiceKey(state.week),JSON.stringify(choice))}
@@ -61,9 +67,8 @@
   function renderCalorieCalculator(){
     const profile=state.calorieProfile||defaultProfile;
     const target=state.calorieTarget;
-    const factor=calorieMultiplier();
     const applied=!!state.calorieProfile;
-    $('#calorieCalculator').innerHTML=`<div class="calorie-copy"><p class="eyebrow">ШАГ 01 · НАСТРОЙ КАЛОРАЖ</p><h2 id="calorieTitle">Сначала — твой ориентир</h2><p>Заполни короткую анкету. Калькулятор рассчитает дневной калораж, а книга автоматически пересчитает количества продуктов и порций.</p></div><form class="calorie-form" id="calorieForm"><label><span>Пол</span><select name="sex"><option value="female" ${profile.sex==='female'?'selected':''}>Женщина</option><option value="male" ${profile.sex==='male'?'selected':''}>Мужчина</option></select></label><label><span>Возраст, лет</span><input name="age" type="number" min="14" max="90" value="${esc(profile.age)}" required></label><label><span>Рост, см</span><input name="height" type="number" min="120" max="230" value="${esc(profile.height)}" required></label><label><span>Вес, кг</span><input name="weight" type="number" min="35" max="250" step="0.1" value="${esc(profile.weight)}" required></label><label><span>Активность</span><select name="activity"><option value="1.2" ${profile.activity==='1.2'?'selected':''}>Минимальная</option><option value="1.375" ${profile.activity==='1.375'?'selected':''}>Низкая</option><option value="1.55" ${profile.activity==='1.55'?'selected':''}>Средняя</option><option value="1.725" ${profile.activity==='1.725'?'selected':''}>Высокая</option><option value="1.9" ${profile.activity==='1.9'?'selected':''}>Очень высокая</option></select></label><label><span>Цель</span><select name="goal"><option value="loss" ${profile.goal==='loss'?'selected':''}>Снижение веса</option><option value="maintain" ${profile.goal==='maintain'?'selected':''}>Поддержание</option><option value="gain" ${profile.goal==='gain'?'selected':''}>Набор</option></select></label><button type="submit" class="calorie-submit">Рассчитать и применить</button></form><div class="calorie-result" aria-live="polite"><div><span class="calorie-result-label">${applied?'Твой целевой калораж':'Пока базовый ориентир книги'}</span><strong>${formatCalories(target)} <small>ккал / день</small></strong></div><div class="calorie-result-meta">Все количества в книге сейчас умножаются на <b>×${formatFactor(factor)}</b> от базового меню около 2000 ккал.</div></div><p class="calorie-note">Это ориентировочный расчёт, а не медицинское назначение. При изменении данных просто нажми кнопку ещё раз.</p>`;
+    $('#calorieCalculator').innerHTML=`<div class="calorie-copy"><p class="eyebrow">ШАГ 01 · НАСТРОЙ КАЛОРАЖ</p><h2 id="calorieTitle">Сначала — твой ориентир</h2><p>Заполни короткую анкету. Калькулятор рассчитает дневной калораж, а книга автоматически пересчитает количества продуктов и порций.</p></div><form class="calorie-form" id="calorieForm"><label><span>Пол</span><select name="sex"><option value="female" ${profile.sex==='female'?'selected':''}>Женщина</option><option value="male" ${profile.sex==='male'?'selected':''}>Мужчина</option></select></label><label><span>Возраст, лет</span><input name="age" type="number" min="14" max="90" value="${formatNumber(profile.age)}" required></label><label><span>Рост, см</span><input name="height" type="number" min="120" max="230" value="${formatNumber(profile.height)}" required></label><label><span>Вес, кг</span><input name="weight" type="number" min="35" max="250" step="1" value="${formatNumber(profile.weight)}" required></label><label><span>Активность</span><select name="activity"><option value="1.2" ${profile.activity==='1.2'?'selected':''}>Минимальная</option><option value="1.375" ${profile.activity==='1.375'?'selected':''}>Низкая</option><option value="1.55" ${profile.activity==='1.55'?'selected':''}>Средняя</option><option value="1.725" ${profile.activity==='1.725'?'selected':''}>Высокая</option><option value="1.9" ${profile.activity==='1.9'?'selected':''}>Очень высокая</option></select></label><label><span>Цель</span><select name="goal"><option value="loss" ${profile.goal==='loss'?'selected':''}>Снижение веса</option><option value="maintain" ${profile.goal==='maintain'?'selected':''}>Поддержание</option><option value="gain" ${profile.goal==='gain'?'selected':''}>Набор</option></select></label><button type="submit" class="calorie-submit">Рассчитать и применить</button></form><div class="calorie-result" aria-live="polite"><div><span class="calorie-result-label">${applied?'Твой целевой калораж':'Пока базовый ориентир книги'}</span><strong>${formatCalories(target)} <small>ккал / день</small></strong></div><div class="calorie-result-meta">Количества продуктов пересчитаны под твой калораж и округлены до целых.</div></div><p class="calorie-note">Это ориентировочный расчёт, а не медицинское назначение. При изменении данных просто нажми кнопку ещё раз.</p>`;
     $('#calorieForm').onsubmit=e=>{
       e.preventDefault();
       const form=new FormData(e.currentTarget);
@@ -140,7 +145,7 @@
     const week=current(),dayContent=week.days.map((d,di)=>{
       const cards=d.meals.map((m,mi)=>{
         if(q&&!m.title.toLowerCase().includes(q)&&!m.ingredients.join(' ').toLowerCase().includes(q))return '';
-        const recipeId=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[recipeId],servings=m.portionBase*state.people*calorieMultiplier();
+        const recipeId=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[recipeId],servings=Math.round(m.portionBase*state.people*calorieMultiplier());
         const ingredientRows=m.ingredients.map((item,ii)=>splitIngredient(item).map((part,si)=>{
           const id=`${ingredientId(di,mi,ii)}-${si}`,checked=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];
           return `<label class="recipe-ingredient ${checked?'is-selected':''}"><input type="checkbox" data-ingredient="${id}" ${checked?'checked':''}><span>${esc(scaleText(part,state.people))}</span></label>`
@@ -155,7 +160,7 @@
         const prepSources=(m.prepSources?.length?m.prepSources:(m.prepSource?[m.prepSource]:[]));
         const prepSource=prepSources.map(item=>'<p class="recipe-origin">'+esc(item.label)+' — <a href="#'+esc(item.id)+'" data-prep-source="'+esc(item.id)+'">открыть шаг заготовки</a>.</p>').join('');
         const photo=m.image?`<img class="recipe-photo" src="${esc(m.image)}" alt="${esc(m.title)}" loading="lazy">`:'';
-        const servingAmount=formatNumber(servings),servingWord=servings===1?'порция':servings>1&&servings<5?'порции':'порций';
+        const servingAmount=formatNumber(servings),servingWord=plural(servings,'порция','порции','порций');
         return `<details class="recipe-card ${recipeSelected?'recipe-picked':''}" id="recipe-${recipeId}"><summary><span class="slot">${esc(m.slot)}</span><span class="recipe-name">${esc(m.title)}</span><span class="recipe-meta">${esc(m.time)}</span><span class="chevron" aria-hidden="true"></span></summary><div class="recipe-actions"><button class="add-recipe ${recipeSelected?'selected':''}" data-recipe="${recipeId}" aria-pressed="${recipeSelected}">${recipeSelected?'✓ Ингредиенты добавлены':'＋ Добавить ингредиенты в покупки'}</button></div><div class="recipe-body"><div class="recipe-badges"><span>${servingAmount} ${servingWord}${m.slot==='Ужин'?' (ужин + обед)':''}</span></div>${photo}${source}${prepSource}<div class="recipe-columns"><div><h4>Ингредиенты <small>отметь нужные</small></h4><div class="recipe-ingredients">${ingredients}</div></div><div><h4>Приготовление</h4><ol>${m.steps.map(x=>`<li>${esc(scaleText(x,state.people))}</li>`).join('')}</ol>${m.notes.length?`<div class="recipe-notes">${m.notes.map(x=>`<p>${esc(scaleText(x,state.people))}</p>`).join('')}</div>`:''}</div></div></div></details>`
       }).join('');
       const weeklyPrep=!q&&di===2&&week.prepBlocks?.[1]?recipeWeeklyPrepBlock(week.prepBlocks[1],'midweek',prepBlockId('midweek',1)):'';
@@ -212,7 +217,7 @@
   }
   function renderGroceries(){
     const w=current(),key=checkedKey(state.week,state.people),checked=loadJSON(key,{}),selected=selectedIngredients(),selectionChecks=loadJSON(selectionKey(state.week,state.people),{});
-    $('#listSummary').innerHTML=`<strong>Список на ${state.people} ${peopleWord(state.people)}</strong><span>${formatCalories(state.calorieTarget)} ккал · количества × ${formatFactor(state.people*calorieMultiplier())} от базового плана · <button class="quiet-button" id="clearChecks">Снять отметки</button></span>`;
+    $('#listSummary').innerHTML=`<strong>Список на ${state.people} ${peopleWord(state.people)}</strong><span>${formatCalories(state.calorieTarget)} ккал / день на человека · количества округлены до целых · <button class="quiet-button" id="clearChecks">Снять отметки</button></span>`;
     $('#clearChecks').onclick=()=>{localStorage.removeItem(key);localStorage.removeItem(selectionKey(state.week,state.people));renderGroceries()};
     $('#selectedShopping').innerHTML=selected.length?`<div class="selected-shopping-head"><div><p class="eyebrow">ТВОЙ ВЫБОР</p><h3>Ингредиенты выбранных рецептов <span>${selected.length}</span></h3></div><button class="quiet-button" id="clearSelection">Очистить выбор</button></div><p class="selected-note">Эти продукты добавлены сюда автоматически. Совпадения также подсвечены в общем списке ниже.</p><div class="selected-items">${selected.map(item=>`<label class="selected-item ${selectionChecks[item.id]?'checked':''}"><input type="checkbox" data-selected-check="${item.id}" ${selectionChecks[item.id]?'checked':''}><span><strong>${esc(scaleText(item.item,state.people))}</strong><small>${esc(item.day)} · ${esc(item.recipe)}</small></span></label>`).join('')}</div>`:'';
     const clearSelection=$('#clearSelection');if(clearSelection)clearSelection.onclick=()=>{localStorage.removeItem(choiceKey(state.week));localStorage.removeItem(selectionKey(state.week,state.people));renderRecipes();renderGroceries();renderIntro()};
