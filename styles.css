@@ -287,7 +287,7 @@ footer{border-color:var(--line);color:#8a8b9b}
 footer>a:last-child{color:var(--purple)}
 
 @media(max-width:760px){
-  .topbar{background:rgba(255,255,255,.97)}
+  .topbar{height:auto;min-height:82px;background:rgba(255,255,255,.97)}
   .hero{margin-top:14px;height:470px}
   .hero h1{font-size:38px;line-height:1.08}
   .controlbar{padding-top:24px}
