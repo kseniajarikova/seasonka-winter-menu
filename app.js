@@ -187,7 +187,7 @@
       const origin=a.closest('.recipe-card');
       const step=document.getElementById(a.dataset.prepSource);
       if(!origin||!step)return;
-      state.prepReturn={week:state.week,recipe:origin.id,query:state.query};
+      state.prepReturn={week:state.week,view:'recipes',recipe:origin.id,query:state.query,scrollY:window.scrollY};
       state.view='prep';
       renderView();
       for(let p=step;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;
@@ -283,20 +283,20 @@
     const returnButton=$('#prepReturn');
     returnButton.hidden=state.view!=='prep'||!state.prepReturn;
     if(!returnButton.hidden){
-      const {week,recipe}=state.prepReturn;
-      const day=+recipe.split('-')[2];
-      returnButton.textContent='← Вернуться к рецепту · '+data.weeks[week].days[day].name.toLowerCase();
+      const {week,recipe,view}=state.prepReturn;
+      const day=recipe?+recipe.split('-')[2]:null;
+      returnButton.textContent=recipe?'← Вернуться к рецепту · '+data.weeks[week].days[day].name.toLowerCase():view==='recipes'?'← Вернуться к рецептам':'← Вернуться к меню';
     }
     history.replaceState(null,'',(location.pathname||'')+(location.search||'')+'#'+state.view)
   }
   function bindPrepLinks(){
     $$('[data-prep-link]').forEach(a=>a.onclick=e=>{
       e.preventDefault();
-      state.prepReturn=null;
-      state.view='prep';
-      renderView();
       const target=document.getElementById(a.dataset.prepLink);
       if(!target)return;
+      if(state.view!=='prep')state.prepReturn={week:state.week,view:state.view,recipe:null,query:state.query,scrollY:window.scrollY,openRecipes:$$('#recipeDays .recipe-card[open]').map(card=>card.id)};
+      state.view='prep';
+      renderView();
       for(let p=target;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;
       target.scrollIntoView({behavior:'smooth',block:'center'});
     })
@@ -311,14 +311,15 @@
     state.week=origin.week;
     state.query=origin.query;
     $('#recipeSearch').value=origin.query;
-    state.view='recipes';
+    state.view=origin.view;
     render();
+    for(const id of origin.openRecipes||[]){const card=document.getElementById(id);if(card)card.open=true}
     const recipe=document.getElementById(origin.recipe);
     if(recipe){
       recipe.open=true;
       recipe.querySelector('summary').focus({preventScroll:true});
       recipe.scrollIntoView({behavior:'smooth',block:'start'});
-    }
+    }else window.scrollTo({top:origin.scrollY,behavior:'smooth'});
   };
   peopleSelect.onchange=()=>{state.people=+peopleSelect.value;render()};
   $('#recipeSearch').oninput=e=>{state.query=e.target.value;renderRecipes()};
