@@ -4023,3 +4023,50 @@ window.applyCulinaryAudit();
   const grains=week.groceries.find(group=>group.name==='Крупы и хлеб');
   grains.items=grains.items.map(item=>item.replace('Овсяные хлопья — 90 г','Овсяные хлопья — 75 г'));
 })();
+
+/* Tester feedback for day 3: alternate pumpkin prep and concise ingredient lists. */
+(()=>{
+  const day=window.MENU_DATA.weeks['1'].days[2];
+  const meal=slot=>day.meals.find(item=>item.slot===slot);
+
+  const breakfast=meal('Завтрак');
+  breakfast.ingredients=breakfast.ingredients.map(item=>item.replace('тыква запечённая — 100 г','тыква — 100 г, запечённая или отваренная'));
+  breakfast.steps[0]='Если тыкву не запекали, нарезать 100 г кубиками и отварить до мягкости. Пшено несколько раз промыть горячей водой. Залить 375 мл воды, довести до слабого кипения и варить под крышкой на минимальном огне 20 минут, помешивая в последние 5 минут. Затем добавить 100 г запечённой или отваренной тыквы. Снять с огня и оставить под крышкой ещё на 5 минут.';
+
+  const lunch=meal('Обед');
+  lunch.ingredients=[
+    lunch.ingredients[0],
+    lunch.ingredients[4],
+    lunch.ingredients[1],
+    lunch.ingredients[2],
+    lunch.ingredients[3],
+    'оливковое масло — 10 г, добавить при разогреве'
+  ];
+  lunch.ingredientSections=[
+    {title:'Треска и рис',count:2},
+    {title:'Соус',count:3},
+    {title:'При подаче',count:1}
+  ];
+
+  const dinner=meal('Ужин');
+  dinner.ingredients=[
+    'нежирная свинина — 320 г',
+    'киноа — 130 г сухой',
+    'эдамаме — 100 г',
+    'пекинская капуста — 300 г',
+    'огурец — 200 г',
+    'груша — 80 г',
+    'соевый соус с низким содержанием соли — 25 мл',
+    'чеснок — 8 г',
+    'имбирь — 10 г',
+    'кунжутное масло — 5 мл',
+    'кунжут — 8 г',
+    'зелёный лук — 20 г',
+    'кинза — 15 г',
+    'рисовый уксус — 10 мл',
+    'соль — 1 г',
+    'каджи-намуль',
+    'морковь по-корейски'
+  ];
+  dinner.steps[3]='Замаринованную свинину обжарить на горячей сковороде до полной готовности, примерно 5–7 минут. Снять с огня и добавить 5 мл кунжутного масла.';
+})();
