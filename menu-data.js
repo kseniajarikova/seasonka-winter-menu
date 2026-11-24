@@ -1420,7 +1420,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Цельнозерновой тост с авокадо, яйцом и скиром",
-              "image": "meal-week2-day5-breakfast.png",
+              "image": "meal-week2-day5-breakfast.png?v=20261124-image-fix",
               "portionBase": 1,
               "time": "10 минут",
               "ingredients": [
@@ -1468,7 +1468,7 @@ window.MENU_DATA = {
             {
               "slot": "Ужин",
               "title": "Перцы, фаршированные индейкой и бурым рисом, салат из пекинской капусты и огурца",
-              "image": "meal-week2-day5-dinner.png",
+              "image": "meal-week2-day5-dinner.png?v=20261124-image-fix",
               "portionBase": 2,
               "time": "30 минут активно / 55 минут всего",
               "ingredients": [
@@ -1531,7 +1531,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Фаршированный перец с индейкой, бурым рисом и салатом",
-              "image": "meal-week2-day5-dinner.png",
+              "image": "meal-week2-day5-dinner.png?v=20261124-image-fix",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
