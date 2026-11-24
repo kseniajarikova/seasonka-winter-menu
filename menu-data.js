@@ -4070,3 +4070,32 @@ window.applyCulinaryAudit();
   ];
   dinner.steps[3]='Замаринованную свинину обжарить на горячей сковороде до полной готовности, примерно 5–7 минут. Снять с огня и добавить 5 мл кунжутного масла.';
 })();
+
+/* Day 8 dinner makes two portions: keep its potato for day 9 lunch. */
+(()=>{
+  const week=window.MENU_DATA.weeks['2'];
+  const dinner=week.days[0].meals.find(meal=>meal.slot==='Ужин');
+  const lunch=week.days[1].meals.find(meal=>meal.slot==='Обед');
+
+  dinner.ingredients=dinner.ingredients.map(item=>/^картофель мелкий/i.test(item)
+    ?'картофель мелкий — 400 г (по 200 г на ужин дня 8 и обед дня 9)':item);
+  dinner.steps[2]='Картофель для ужина (200 г) прогреть под крышкой с 1–2 столовыми ложками воды. Брокколи прогреть отдельно, добавить мелко нарезанный чеснок, оставшееся масло, кунжут и лимонный сок.';
+  dinner.steps[3]='Подать половину курицы и брокколи с прогретым картофелем. Оставшуюся курицу, брокколи и 200 г картофеля охладить и убрать в холодильник для обеда дня 9.';
+  dinner.notes=dinner.notes.map(note=>note.replace('готовые картофель и брокколи добавить на последние 8–10 минут','половину готового картофеля и брокколи добавить на последние 8–10 минут'));
+
+  lunch.title='Курица с картофелем в мундире и брокколи';
+  lunch.ingredients=lunch.ingredients.filter(item=>!/^готовый бурый рис/i.test(item));
+  lunch.ingredients.push('готовый картофель в мундире — из 200 г сырого, от ужина дня 8');
+  lunch.steps[0]='Картофель, курицу и брокколи из ужина дня 8 разогреть до равномерно горячего состояния.';
+
+  const prep=week.prepBlocks[0].items.find(item=>item.id==='prep-w2-chicken');
+  prep.text=prep.text.replace('Картофель 200 г для ужина дня 8','Картофель 400 г для ужина дня 8 и обеда дня 9');
+  week.weekStartPrep.items=week.weekStartPrep.items.map(item=>item.replace('для ужина дня 8.','для ужина дня 8 и обеда дня 9.'));
+  week.days[0].tomorrowPrep.items=week.days[0].tomorrowPrep.items
+    .filter(item=>!/^Сварить бурый рис 100 г для обеда дня 9/.test(item))
+    .map(item=>item.replace('готовую курицу около 150 г и брокколи около 140 г.','готовую курицу около 150 г, брокколи около 140 г и картофель из 200 г сырого.'));
+  for(const group of week.groceries){
+    group.items=group.items.map(item=>item==='Картофель — 500 г'?'Картофель — 700 г':
+      item==='Бурый рис — 320 г'?'Бурый рис — 220 г':item);
+  }
+})();
