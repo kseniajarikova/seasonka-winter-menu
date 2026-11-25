@@ -220,7 +220,15 @@
     const choice=currentChoice(),out=[];
     current().days.forEach((day,di)=>day.meals.forEach((meal,mi)=>{
       const rid=`${state.week}-${di}-${mi}`,recipeSelected=!!choice.recipes[rid];
-      meal.ingredients.forEach((item,ii)=>splitIngredient(item).forEach((part,si)=>{const id=`${ingredientId(di,mi,ii)}-${si}`,selected=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];if(selected)out.push({id,item:part,recipe:meal.title,day:day.name,name:normalizeName(part)})}))
+      meal.ingredients.forEach((item,ii)=>splitIngredient(item).forEach((part,si)=>{
+        const id=`${ingredientId(di,mi,ii)}-${si}`,selected=(recipeSelected&&!choice.excluded[id])||!!choice.ingredients[id];
+        if(!selected)return;
+        const shoppingItems=meal.shoppingComponents?.[ii]&&si===0?meal.shoppingComponents[ii]:[part];
+        shoppingItems.forEach((shoppingItem,ci)=>out.push({
+          id:shoppingItems.length===1?id:`${id}-prep-${ci}`,
+          item:shoppingItem,recipe:meal.title,day:day.name,name:normalizeName(shoppingItem)
+        }));
+      }))
     }));
     return out
   }
