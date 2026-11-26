@@ -14,12 +14,12 @@ body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--sans
 a{color:inherit}
 .topbar{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px max(22px,calc((100vw - 1180px)/2));border-bottom:1px solid #e3e0e9;background:rgba(250,249,247,.96);position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
 .brand{display:flex;align-items:center;gap:13px;text-decoration:none}
-.brand-logo{display:block;width:min(190px,40vw);height:auto;max-height:58px;object-fit:contain;background:#10162e;border-radius:5px;padding:4px}
+.brand-logo{display:block;width:min(190px,40vw);height:auto;max-height:58px;object-fit:contain;background:transparent;border-radius:0;padding:0}
 .brand-season{font-size:9px;letter-spacing:.12em;color:#8a8d99;border-left:1px solid var(--line);padding-left:13px;line-height:1.5}
 .topnav{display:flex;gap:24px;align-items:center}.topnav a{font-size:12px;text-decoration:none;color:#68718a}.topnav a:hover{color:var(--purple)}
 .topnav .course-link{background:var(--purple);color:white;border-radius:8px;padding:10px 13px;font-weight:700}.topnav .course-link:hover{background:#4526aa;color:white}
 .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
-.hero{margin:26px auto 0;min-height:395px;border-radius:18px;overflow:hidden;position:relative;background:var(--card);border:1px solid #e3e0e9;box-shadow:var(--shadow);display:grid;grid-template-columns:1.1fr .9fr;align-items:stretch}
+.hero{margin:26px auto 0;min-height:395px;border-radius:18px;overflow:hidden;position:relative;background:var(--card);border:1px solid #e3e0e9;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr;align-items:stretch}
 .hero-copy{padding:48px clamp(26px,5vw,64px);align-self:center}
 .eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--purple);margin:0 0 12px}
 h1,h2,h3,p{margin-top:0}
@@ -108,13 +108,7 @@ footer a{color:var(--purple);text-decoration:none}footer .footer-course{font-wei
 <p>Пробуй специи, соусы и хрустящие топпинги из разных кухонь. Выбирай, что готовишь, — и находи вкусную идею для своей тарелки.</p>
 <a class="market-cta" href="#shelves">Найти акцент к блюду <span aria-hidden="true">↓</span></a>
 </div>
-<div class="hero-display" role="group" aria-label="Приправы на полках">
-<div class="illustrated-shelf">
-<p class="shelf-caption">Для начала — четыре акцента</p>
-<div class="shelf-items" id="heroSpices"></div>
-<div class="shelf-board" aria-hidden="true"></div>
-</div>
-</div>
+
 </section>
 <div class="callout"><span class="spark" aria-hidden="true">✳</span><p><strong>Выбирай от блюда.</strong> Для салата — кислинку и хруст, для супа — насыщенный аромат, к каше — тёплую пряность. А дальше — только твой вкус.</p></div>
 <section id="shelves" aria-labelledby="shelf-title">
@@ -139,23 +133,23 @@ footer a{color:var(--purple);text-decoration:none}footer .footer-course{font-wei
 <script>
 (function(){
 "use strict";
-var bookUrl="https://kseniajarikova.github.io/seasonka-winter-menu/#recipes";
+var bookUrl="https://kseniajarikova.github.io/seasonka-winter-menu/";
 var products=[
-{id:"gochujang",name:"Паста гочуджан",tag:"Корея · остро-сладкая",desc:"Густая ферментированная паста с чили: добавляет блюду остроту, сладость и насыщенный вкус.",try:"Размешай немного в маринаде для курицы, соусе к рису или заправке. Если пробуешь впервые — начни с малого.",cats:["hot","soup"],book:"Курица в соевом соусе; пибимпап с курицей; корейский суп с курицей"},
-{id:"soy",name:"Соевый соус",tag:"солёный · умами",desc:"Удобная основа для маринада, заправки или соуса к крупе и овощам. Солёность у разных вариантов отличается.",try:"Добавь немного к курице, грибам, тофу или в заправку для огурцов. Попробуй вариант с низким содержанием соли.",cats:["salad","hot","soup"],book:"Курица в соевом соусе; пулькоги; тофу с гречкой и грибами"},
+{id:"gochujang",name:"Паста гочуджан",tag:"Корея · остро-сладкая",desc:"Густая ферментированная паста с чили: добавляет блюду остроту, сладость и насыщенный вкус.",try:"Размешай немного в маринаде для курицы, соусе к рису или заправке. Если пробуешь впервые — начни с малого.",cats:["hot","soup"],book:[{title:"Курица в соевом соусе с салатом из пекинской капусты",id:"1-0-2"},{title:"Пибимпап с курицей, тофу и яйцом на буром рисе",id:"1-3-2"},{title:"Корейский суп с курицей и яичной лапшой",id:"1-4-2"}]},
+{id:"soy",name:"Соевый соус",tag:"солёный · умами",desc:"Удобная основа для маринада, заправки или соуса к крупе и овощам. Солёность у разных вариантов отличается.",try:"Добавь немного к курице, грибам, тофу или в заправку для огурцов. Попробуй вариант с низким содержанием соли.",cats:["salad","hot","soup"],book:[{title:"Курица в соевом соусе с салатом из пекинской капусты",id:"1-0-2"},{title:"Пулькоги из свинины с бурым рисом и банчанами",id:"1-2-2"},{title:"Тофу с гречкой и грибами в соево-чесночной подливе, шпинат-намуль",id:"2-6-2"}]},
 {id:"salt",name:"Хлопья морской соли",tag:"солёная · хрустящая",desc:"Крупные кристаллы приятно хрустят и работают как финальный акцент.",try:"Добавь щепотку на печенье с шоколадом или карамелью, запечённые овощи либо помидоры перед подачей.",cats:["sweet","salad","hot"],book:null},
-{id:"sesame-oil",name:"Кунжутное масло",tag:"ореховый аромат",desc:"Особенно ароматное масло хорошо использовать понемногу — как приправу и завершающий штрих.",try:"Добавь в заправку для огурцов или овощей, к лапше, рису либо уже готовому горячему блюду.",cats:["salad","hot","soup"],book:"Курица в соевом соусе; пибимпап; салат из битых огурцов"},
+{id:"sesame-oil",name:"Кунжутное масло",tag:"ореховый аромат",desc:"Особенно ароматное масло хорошо использовать понемногу — как приправу и завершающий штрих.",try:"Добавь в заправку для огурцов или овощей, к лапше, рису либо уже готовому горячему блюду.",cats:["salad","hot","soup"],book:[{title:"Пибимпап с курицей, тофу и яйцом на буром рисе",id:"1-3-2"},{title:"Форель с перловкой, фасолью и салатом из битых огурцов",id:"1-6-1"}]},
 {id:"sumac",name:"Сумах",tag:"кислый · ягодный",desc:"Приправа с выразительной кислинкой. Помогает добавить свежий акцент без лимонного сока.",try:"Посыпь огурцы, помидоры, хумус, запечённые овощи или салат с крупой.",cats:["salad","hot"],book:null},
 {id:"miso",name:"Мисо-паста",tag:"солёная · умами",desc:"Ферментированная паста, которая добавляет глубину вкуса бульону, соусу или маринаду.",try:"Размешай немного в тёплой воде для супа, добавь в заправку или тонким слоем нанеси на овощи перед запеканием.",cats:["soup","hot","salad"],book:null},
-{id:"chili",name:"Хлопья чили",tag:"острота · на свой вкус",desc:"Простой способ добавить остроты прямо в тарелке — количество легко регулировать.",try:"Посыпь суп, тушёные овощи, лапшу или яйца. Добавляй понемногу и пробуй.",cats:["soup","hot","salad"],book:"Пулькоги из свинины; корейский суп с курицей; треска в пряной глазури"},
+{id:"chili",name:"Хлопья чили",tag:"острота · на свой вкус",desc:"Простой способ добавить остроты прямо в тарелке — количество легко регулировать.",try:"Посыпь суп, тушёные овощи, лапшу или яйца. Добавляй понемногу и пробуй.",cats:["soup","hot","salad"],book:[{title:"Пулькоги из свинины с бурым рисом и банчанами",id:"1-2-2"},{title:"Корейский суп с курицей и яичной лапшой",id:"1-4-2"},{title:"Треска в пряной глазури с перловкой и цветной капустой",id:"2-3-2"}]},
 {id:"maple",name:"Кленовый сироп",tag:"сладкий · карамельный",desc:"Сладкий сироп подходит не только к завтраку: его можно добавить в глазурь или заправку.",try:"Смешай немного с горчицей и маслом для заправки либо добавь в маринад к запечённой моркови. Хорош и в каше.",cats:["sweet","salad","hot"],book:null},
 {id:"onion",name:"Хрустящий жареный лук",tag:"хруст · сладость",desc:"Готовый хрустящий топпинг добавляет текстуру и лёгкий жареный вкус.",try:"Посыпь суп, боул, салат или запечённые овощи прямо перед подачей, чтобы сохранить хруст.",cats:["soup","salad","hot"],book:null},
 {id:"zaatar",name:"Заатар",tag:"травы · кунжут · кислинка",desc:"Ближневосточная смесь: состав зависит от производителя, часто в ней есть травы, кунжут и сумах.",try:"Посыпь лепёшку с маслом, яйца, хумус или запечённые овощи. Начни с щепотки и проверь состав на упаковке.",cats:["salad","hot"],book:null},
 {id:"furikake",name:"Фурикакэ",tag:"Япония · сытный топпинг",desc:"Японская сухая приправа к рису. Составы различаются: могут включать кунжут, водоросли, рыбу или другие добавки.",try:"Посыпь рис, яйцо, рыбу или овощи прямо перед подачей. Проверь состав, если избегаешь конкретных ингредиентов.",cats:["hot","soup"],book:null},
-{id:"rice-vinegar",name:"Рисовый уксус",tag:"мягкая кислинка",desc:"Добавляет свежесть заправке, маринаду и быстрым овощным закускам.",try:"Смешай с соевым соусом для огурцов, капусты или салата. Добавляй понемногу и пробуй.",cats:["salad","hot","soup"],book:"Салат из битых огурцов; кимчи-стайл; маринованный дайкон"},
+{id:"rice-vinegar",name:"Рисовый уксус",tag:"мягкая кислинка",desc:"Добавляет свежесть заправке, маринаду и быстрым овощным закускам.",try:"Смешай с соевым соусом для огурцов, капусты или салата. Добавляй понемногу и пробуй.",cats:["salad","hot","soup"],book:[{title:"Форель с перловкой, фасолью и салатом из битых огурцов",id:"1-6-1"},{title:"Креветки с рисовой лапшой, бок-чоем и имбирём, кимчи из пекинской капусты",id:"3-2-2"},{title:"Хек с кукурузной полентой и маринованным дайконом",id:"2-6-1"}]},
 {id:"sesame",name:"Кунжут",tag:"ореховый · хрустящий",desc:"Семена дают текстуру и лёгкий ореховый вкус; их можно слегка подсушить на сухой сковороде.",try:"Посыпь салат, рис, лапшу, рыбу или готовые овощи.",cats:["salad","hot","soup"],book:"Курица в соевом соусе; пибимпап; салат из битых огурцов"},
 {id:"smoked-paprika",name:"Копчёная паприка",tag:"дымный · тёплый",desc:"Добавляет овощам и блюдам из бобовых заметную копчёную ноту.",try:"Попробуй в картофеле, фасоли, томатном супе или маринаде. Это отдельная идея: в книге используется обычная паприка.",cats:["hot","soup"],book:null},
-{id:"cinnamon",name:"Корица",tag:"тёплая · сладкая",desc:"Знакомый аромат, который хорошо раскрывается не только в выпечке, но и в простых завтраках.",try:"Добавь к каше, запечённым яблокам, груше или йогурту с фруктами.",cats:["sweet"],book:"Овсянка с мандарином; пшённая каша с тыквой"},
+{id:"cinnamon",name:"Корица",tag:"тёплая · сладкая",desc:"Знакомый аромат, который хорошо раскрывается не только в выпечке, но и в простых завтраках.",try:"Добавь к каше, запечённым яблокам, груше или йогурту с фруктами.",cats:["sweet"],book:[{title:"Овсянка с греческим йогуртом и мандарином",id:"1-0-0"},{title:"Пшённая каша с тыквой, скиром и яблоком",id:"1-2-0"}]},
 {id:"cumin",name:"Зира (кумин)",tag:"пряная · землистая",desc:"Тёплая пряность, которая особенно хорошо сочетается с бобовыми и томатами.",try:"Добавь немного к фасоли, чечевице, томатному соусу или запечённой моркови.",cats:["hot","soup"],book:null}
 ];
 var labels={all:"Что сегодня готовишь?",salad:"Идеи к салату или боулу",soup:"Идеи к супу",hot:"Идеи к горячему",sweet:"Идеи к завтраку и сладкому"};
@@ -180,10 +174,7 @@ top.appendChild(left);top.appendChild(make("span",{className:"number"},"№ "+St
 article.appendChild(top);
 article.appendChild(make("p",{className:"desc"},p.desc));
 var idea=make("div",{className:"try"});idea.appendChild(make("strong",{},"Попробуй так"));idea.appendChild(document.createTextNode(p.try));article.appendChild(idea);
-var ref=make("div",{className:"book-ref"});
-if(p.book){ref.appendChild(make("span",{},"В книге рецептов: "));var a=make("a",{href:bookUrl,target:"_blank",rel:"noopener"},"«"+p.book+"» ↗");ref.appendChild(a);}
-else ref.appendChild(make("span",{className:"idea"},"Идея для твоих экспериментов — не из книги рецептов."));
-article.appendChild(ref);
+if(p.book&&p.book.length){var ref=make("div",{className:"book-ref"});ref.appendChild(make("span",{},"В книге рецептов: "));p.book.forEach(function(recipe,i){if(i)ref.appendChild(document.createTextNode("; "));var a=make("a",{href:bookUrl+"#recipe-"+recipe.id,target:"_blank",rel:"noopener"},"«"+recipe.title+"» ↗");ref.appendChild(a);});article.appendChild(ref);}
 var actions=make("div",{className:"actions","aria-label":"Поиск товара на маркетплейсе"});
 [
 ["Ozon","https://www.ozon.ru/search/?text="],
@@ -197,15 +188,6 @@ label.appendChild(check);label.appendChild(document.createTextNode("Хочу п�
 article.appendChild(label);return article;
 }
 products.forEach(function(p,i){cards.appendChild(createCard(p,i));});
-var heroSpices=document.getElementById("heroSpices");
-["gochujang","salt","sumac","cinnamon"].forEach(function(id){
-var p=products.find(function(item){return item.id===id;});
-if(!p)return;
-var item=document.createElement("div");item.className="shelf-item";
-var icon=document.createElement("span");icon.className="mini-icon";icon.setAttribute("aria-hidden","true");var heroIndex=products.indexOf(p);icon.style.backgroundPosition=((heroIndex%4)*100/3)+"% "+(Math.floor(heroIndex/4)*100/3)+"%";
-var label=document.createElement("span");label.textContent=({"gochujang":"Гочуджан","salt":"Морская соль","sumac":"Сумах","cinnamon":"Корица"})[id];
-item.appendChild(icon);item.appendChild(label);heroSpices.appendChild(item);
-});
 function renderFilter(filter){
 activeFilter=filter;var visible=0;var query=searchInput.value.trim().toLowerCase();
 Array.prototype.forEach.call(cards.querySelectorAll(".card"),function(card){
