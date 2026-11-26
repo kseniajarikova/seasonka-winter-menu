@@ -1993,7 +1993,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Курица с грибами и перловкой",
-              "image": "meal-week3-day1-dinner.png",
+              "image": "meal-week3-day3-breakfast.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2076,7 +2076,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Котлета из индейки с гречкой и морковью по-корейски",
-              "image": "meal-week3-day2-dinner.png",
+              "image": "meal-week3-day2-breakfast.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
@@ -2136,7 +2136,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Бутерброд с форелью и огурцом, скир с овсянкой и яблоком",
-              "image": "meal-week3-day4-breakfast.png",
+              "image": "meal-week3-day4-breakfast-cured-trout.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
