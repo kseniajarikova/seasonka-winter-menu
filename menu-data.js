@@ -2307,7 +2307,7 @@ window.MENU_DATA = {
             {
               "slot": "Завтрак",
               "title": "Кукурузные оладьи с ягодами, скир с овсянкой и яблоком",
-              "image": "meal-week3-day6-breakfast.png",
+              "image": "meal-week3-day6-breakfast-flour.png",
               "portionBase": 1,
               "time": "20 минут",
               "ingredients": [
@@ -2411,7 +2411,7 @@ window.MENU_DATA = {
             {
               "slot": "Обед",
               "title": "Треска с бататом и шпинатом-намуль",
-              "image": "meal-week3-day6-dinner.png",
+              "image": "meal-week3-day7-lunch-sweet-potato.png",
               "portionBase": 1,
               "time": "5 минут",
               "ingredients": [
