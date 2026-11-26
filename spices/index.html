@@ -70,6 +70,65 @@ footer a{color:#647365;text-decoration:none}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topnav{gap:16px}}
 @media(max-width:620px){.topbar{height:62px;padding:0 16px}.brand{font-size:10px;gap:8px}.brand-mark{width:32px;height:32px}.topnav{gap:0}.topnav a{font-size:11px}.topnav a:first-child{display:none}.wrap{padding:0 14px}.hero{margin-top:14px;min-height:310px;border-radius:15px}.hero-copy{padding:34px 23px}.hero:before{width:290px;height:290px;right:-35px;top:-120px}.hero:after{width:190px;height:190px;right:23px;top:140px}.hero-copy>p:not(.eyebrow){font-size:14px}.pills span{font-size:10px}.section-head{align-items:start;display:block;margin-top:29px}.section-note{margin-top:9px}.filters{margin-right:-14px;padding-right:14px}.grid{grid-template-columns:1fr;gap:10px}.card{padding:16px}.card h3{font-size:23px}.guide{grid-template-columns:1fr;padding:19px}.guide-link{justify-content:center}.callout{padding:14px}.callout p{margin-bottom:0}footer{padding:18px 14px;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+/* Market display and product-led layout */
+.hero{background:linear-gradient(108deg,#4b624e 0%,#52694f 52%,#3a473b 100%);min-height:370px}
+.hero:before,.hero:after{display:none}
+.hero-copy{max-width:640px;padding:48px 6%}
+.hero-copy>p:not(.eyebrow){max-width:510px;font-size:16px;line-height:1.55}
+.market-cta{display:inline-flex;align-items:center;gap:9px;margin-top:22px;padding:11px 15px;border-radius:9px;background:#f7f4e9;color:#334736;text-decoration:none;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(0,0,0,.12)}
+.market-cta:hover{background:white;transform:translateY(-1px)}
+.market-display{position:absolute;right:4%;top:50%;transform:translateY(-50%) rotate(2deg);width:37%;max-width:390px;padding:17px 17px 24px;border-radius:16px;background:rgba(31,39,29,.3);border:1px solid rgba(255,255,255,.15);display:grid;grid-template-columns:repeat(2,1fr);gap:12px;box-shadow:0 17px 35px rgba(0,0,0,.16)}
+.market-display:after{content:"";position:absolute;left:-3%;right:-3%;bottom:7px;height:12px;border-radius:3px;background:linear-gradient(180deg,#c9a476,#a97a4c 48%,#8e6743);box-shadow:0 5px 10px rgba(0,0,0,.2)}
+.market-bowl{display:block;aspect-ratio:1;border:6px solid #eee5d4;border-radius:50%;background-image:url("spice-shelf-grid.jpg");background-size:400% 400%;background-repeat:no-repeat;box-shadow:0 5px 11px rgba(0,0,0,.2)}
+.bowl-a{background-position:0 0}.bowl-b{background-position:33.333% 0}.bowl-c{background-position:66.667% 0}.bowl-d{background-position:0 33.333%}
+.section-head{margin-top:38px}
+.finder{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 8px}
+.finder .filters{flex:1 1 490px;margin:0;padding:3px 2px 10px}
+.search-box{display:flex;align-items:center;gap:9px;min-width:255px;flex:0 1 330px;padding:0 13px;border:1px solid #d8ddd2;border-radius:10px;background:var(--card);color:#7a827a}
+.search-box span{font-size:20px;line-height:1}
+.search-box input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:11px 0;font:13px var(--sans);color:var(--ink)}
+.search-box input::placeholder{color:#92988f}
+.search-box:focus-within{border-color:var(--olive);box-shadow:0 0 0 3px rgba(83,108,84,.12)}
+.filter{background:#fffdf8}
+.filter[aria-pressed=true]{background:var(--rust);border-color:var(--rust);color:white}
+.results{font-size:11px;color:var(--muted);margin:3px 0 14px}
+.grid{gap:30px 16px;align-items:stretch}
+.card{position:relative;padding:0 16px 16px;border-color:#e5dfd2;border-radius:14px;background:#fffdfa;box-shadow:0 6px 0 #c5a77d,0 12px 24px rgba(74,57,36,.08);overflow:visible}
+.card:hover{transform:translateY(-3px);box-shadow:0 7px 0 #c5a77d,0 18px 28px rgba(74,57,36,.15)}
+.product-shot{width:calc(100% + 32px);margin:0 -16px 14px;aspect-ratio:1.55;background-image:url("spice-shelf-grid.jpg");background-size:400% 400%;background-repeat:no-repeat;background-color:#eee8da;border-radius:13px 13px 0 0;border-bottom:1px solid #e5dfd2}
+.card-top{align-items:center}
+.card h3{font-size:23px}
+.number{font-size:12px;color:#a17b57}
+.tag{background:#edf0e5;color:#4e604d}
+.try{background:#f5f2e9;border-left:3px solid #c78b5e}
+.market{border-color:#e5ddcf;background:#fffefa}
+.market:hover,.market:focus-visible{border-color:#a86f4d;background:#f8eee5}
+.tried{margin:13px 0 0}
+.empty{grid-column:1/-1;padding:34px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed #c9cbbd;border-radius:14px}
+.guide{background:#e8ebdf;border:1px solid #d9dfd0}
+@media(max-width:900px){.hero{min-height:330px}.hero-copy{max-width:58%}.market-display{width:35%;right:3%;gap:9px;padding:12px 12px 21px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){
+ .hero{min-height:0;margin-top:14px;display:flex;flex-direction:column;align-items:stretch;border-radius:15px}
+ .hero-copy{max-width:none;padding:29px 21px 17px}
+ .hero-copy>p:not(.eyebrow){font-size:14px}
+ .hero h1{font-size:clamp(36px,10vw,48px)}
+ .market-cta{margin-top:16px}
+ .market-display{position:relative;top:auto;right:auto;transform:none;width:auto;max-width:none;height:auto;display:flex;justify-content:center;gap:8px;margin:0 12px 19px;padding:8px 10px 17px;border-radius:12px}
+ .market-bowl{width:min(19vw,76px);max-width:76px;border-width:4px}
+ .section-head{margin-top:26px;display:block}
+ .section-note{margin-top:8px}
+ .finder{display:block}
+ .finder .filters{margin:0 -14px;padding:3px 14px 10px}
+ .search-box{width:100%;margin:4px 0 11px;min-width:0}
+ .grid{grid-template-columns:1fr;gap:22px}
+ .card{padding:0 14px 15px}
+ .product-shot{width:calc(100% + 28px);margin:0 -14px 13px;aspect-ratio:1.6}
+ .card h3{font-size:24px}
+ .actions{gap:6px}
+ .market{font-size:10px;padding:8px 9px}
+ .guide{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){.market-cta{transition:none}}
 </style>
 </head>
 <body>
@@ -84,24 +143,25 @@ footer a{color:#647365;text-decoration:none}
 <main class="wrap">
 <section class="hero" aria-labelledby="page-title">
 <div class="hero-copy">
-<p class="eyebrow">Маленькие акценты · большой вкус</p>
-<h1 id="page-title">Полка <em>специй</em></h1>
-<p>Собрали соусы, приправы и хрустящие штуки, с которыми знакомые блюда звучат по-новому. Выбери один акцент и попробуй его в своей тарелке.</p>
-<div class="pills"><span>азиатские акценты</span><span>не только Азия</span><span>простые идеи на каждый день</span></div>
+<p class="eyebrow">Приправная лавка · Soft &amp; Super Power</p>
+<h1 id="page-title">Специи к <em>любому блюду</em></h1>
+<p>Выбирай, что сегодня готовишь, и смотри, чем это можно дополнить. Здесь есть корейские акценты и специи для совсем других вкусов.</p>
+<a class="market-cta" href="#shelves">Найти специю по блюду <span aria-hidden="true">↓</span></a>
 </div>
+<div class="market-display" role="img" aria-label="На прилавке: гочуджан, соевый соус, хлопья соли и сумах"><span class="market-bowl bowl-a"></span><span class="market-bowl bowl-b"></span><span class="market-bowl bowl-c"></span><span class="market-bowl bowl-d"></span></div>
 </section>
-<div class="callout"><span class="spark" aria-hidden="true">✳</span><p><strong>Не нужно собирать всю полку сразу.</strong> Начни с одной специи, добавь немного, попробуй блюдо — и реши, хочется ли ещё. Соль, остроту и сладость регулируй под свой вкус.</p></div>
+<div class="callout"><span class="spark" aria-hidden="true">✳</span><p><strong>Выбирай от блюда.</strong> Для салата — кислинку и хруст, для супа — насыщенный аромат, к каше — тёплую пряность. А дальше — только твой вкус.</p></div>
 <section id="shelves" aria-labelledby="shelf-title">
-<div class="section-head"><div><p class="eyebrow">Выбирай по настроению</p><h2 id="shelf-title">Куда добавить вкус</h2></div><p class="section-note">Нажми на полку — покажем подходящие идеи. Отметки «хочу попробовать» сохранятся в этом браузере.</p></div>
-<div class="filters" role="group" aria-label="Фильтр по типу блюда">
-<button class="filter" type="button" data-filter="all" aria-pressed="true">Все акценты</button>
-<button class="filter" type="button" data-filter="salad" aria-pressed="false">Салаты и овощи</button>
-<button class="filter" type="button" data-filter="soup" aria-pressed="false">Супы</button>
+<div class="section-head"><div><p class="eyebrow">Найди свой вкус</p><h2 id="shelf-title">Что сегодня готовишь?</h2></div><p class="section-note">Выбери блюдо или введи продукт — подберём приправы и покажем идеи, как их использовать.</p></div>
+<div class="finder"><div class="filters" role="group" aria-label="Что готовишь?">
+<button class="filter" type="button" data-filter="all" aria-pressed="true">Все полки</button>
+<button class="filter" type="button" data-filter="salad" aria-pressed="false">Салат / боул</button>
+<button class="filter" type="button" data-filter="soup" aria-pressed="false">Суп</button>
 <button class="filter" type="button" data-filter="hot" aria-pressed="false">Горячее</button>
-<button class="filter" type="button" data-filter="sweet" aria-pressed="false">Сладкое</button>
-</div>
+<button class="filter" type="button" data-filter="sweet" aria-pressed="false">Завтрак / сладкое</button>
+</div><label class="search-box"><span aria-hidden="true">⌕</span><input id="spiceSearch" type="search" placeholder="Искать: курица, рис, суп, корица" aria-label="Поиск по специям и применению"></label></div>
 <p class="results" id="results" aria-live="polite"></p>
-<div class="grid" id="cards"></div>
+<div class="grid" id="cards"></div><div class="empty" id="emptyState" hidden>Пока ничего не нашлось. Попробуй другое слово или выбери все полки.</div>
 </section>
 <section class="guide" aria-labelledby="guide-title">
 <div><p class="eyebrow">Хочется сразу в дело?</p><h2 id="guide-title">Открой книгу рецептов</h2><p>Внутри — блюда, в которых уже встречаются соевый соус, гочуджан, кунжутное масло, рисовый уксус, кунжут, хлопья чили и корица.</p></div>
@@ -132,14 +192,21 @@ var products=[
 {id:"cinnamon",name:"Корица",tag:"тёплая · сладкая",desc:"Знакомый аромат, который хорошо раскрывается не только в выпечке, но и в простых завтраках.",try:"Добавь к каше, запечённым яблокам, груше или йогурту с фруктами.",cats:["sweet"],book:"Овсянка с мандарином; пшённая каша с тыквой"},
 {id:"cumin",name:"Зира (кумин)",tag:"пряная · землистая",desc:"Тёплая пряность, которая особенно хорошо сочетается с бобовыми и томатами.",try:"Добавь немного к фасоли, чечевице, томатному соусу или запечённой моркови.",cats:["hot","soup"],book:null}
 ];
-var labels={salad:"Салаты и овощи",soup:"Супы",hot:"Горячее",sweet:"Сладкое"};
+var labels={all:"Что сегодня готовишь?",salad:"Идеи к салату или боулу",soup:"Идеи к супу",hot:"Идеи к горячему",sweet:"Идеи к завтраку и сладкому"};
 var cards=document.getElementById("cards");
 var results=document.getElementById("results");
+var searchInput=document.getElementById("spiceSearch");
+var emptyState=document.getElementById("emptyState");
 var activeFilter="all";
 function make(tag,attrs,content){var el=document.createElement(tag);Object.keys(attrs||{}).forEach(function(k){if(k==="className")el.className=attrs[k];else el.setAttribute(k,attrs[k]);});if(content!==undefined)el.textContent=content;return el;}
 function marketplaceUrl(base,name){return base+encodeURIComponent(name);}
 function createCard(p,index){
-var article=make("article",{className:"card","data-tags":p.cats.join(" ")});
+var textSearch=(p.name+" "+p.tag+" "+p.desc+" "+p.try+" "+(p.book||"")).toLowerCase();
+var article=make("article",{className:"card","data-tags":p.cats.join(" "),"data-search":textSearch});
+var photo=make("div",{className:"product-shot",role:"img","aria-label":"Фото продукта: "+p.name});
+photo.style.backgroundImage="url('spice-shelf-grid.jpg')";
+photo.style.backgroundPosition=((index%4)*100/3)+"% "+(Math.floor(index/4)*100/3)+"%";
+article.appendChild(photo);
 var top=make("div",{className:"card-top"});
 var left=make("div");
 left.appendChild(make("span",{className:"tag"},p.tag));
@@ -166,15 +233,20 @@ article.appendChild(label);return article;
 }
 products.forEach(function(p,i){cards.appendChild(createCard(p,i));});
 function renderFilter(filter){
-activeFilter=filter;var visible=0;
+activeFilter=filter;var visible=0;var query=searchInput.value.trim().toLowerCase();
 Array.prototype.forEach.call(cards.querySelectorAll(".card"),function(card){
-var show=filter==="all"||card.getAttribute("data-tags").split(" ").indexOf(filter)>=0;
-card.hidden=!show;if(show)visible++;
+var tags=card.getAttribute("data-tags").split(" ");
+var usageMatch=filter==="all"||tags.indexOf(filter)>=0;
+var searchMatch=!query||card.getAttribute("data-search").indexOf(query)>=0;
+var show=usageMatch&&searchMatch;card.hidden=!show;if(show)visible++;
 });
-results.textContent="Показано акцентов: "+visible+" из "+products.length;
+results.textContent="На полке: "+visible+" "+(visible===1?"вариант":visible<5?"варианта":"вариантов");
+emptyState.hidden=visible!==0;
+document.getElementById("shelf-title").textContent=filter==="all"?"Что сегодня готовишь?":labels[filter];
 Array.prototype.forEach.call(document.querySelectorAll(".filter"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-filter")===filter));});
 }
 document.querySelectorAll(".filter").forEach(function(b){b.addEventListener("click",function(){renderFilter(b.getAttribute("data-filter"));});});
+searchInput.addEventListener("input",function(){renderFilter(activeFilter);});
 var storageKey="softpower-spice-shelf-v1",saved={};
 try{saved=JSON.parse(localStorage.getItem(storageKey)||"{}")||{};}catch(e){saved={};}
 document.querySelectorAll("[data-save]").forEach(function(input){
