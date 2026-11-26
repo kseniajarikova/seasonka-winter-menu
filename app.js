@@ -332,7 +332,8 @@
   peopleSelect.onchange=()=>{state.people=+peopleSelect.value;render()};
   $('#recipeSearch').oninput=e=>{state.query=e.target.value;renderRecipes()};
   $('#toggleRecipes').onclick=()=>{state.expanded=!state.expanded;$('#toggleRecipes').textContent=state.expanded?'Свернуть все':'Развернуть все';renderRecipes()};
-  const initial=location.hash.slice(1);if(['menu','shopping','prep','recipes'].includes(initial))state.view=initial;
-  render()
+  const initial=location.hash.slice(1),deepRecipe=initial.match(/^recipe-(\d+)-(\d+)-(\d+)$/);if(deepRecipe){state.week=+deepRecipe[1];state.view='recipes'}else if(['menu','shopping','prep','recipes'].includes(initial))state.view=initial;
+  render();
+  if(deepRecipe){const recipeId=deepRecipe.slice(1).join('-'),card=$('#recipe-'+recipeId);if(card){card.open=true;requestAnimationFrame(()=>card.scrollIntoView({behavior:'smooth',block:'start'}))}}
 })();
 
