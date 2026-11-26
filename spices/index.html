@@ -14,10 +14,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--sans
 a{color:inherit}
 .topbar{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px max(22px,calc((100vw - 1180px)/2));border-bottom:1px solid #e3e0e9;background:rgba(250,249,247,.96);position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
 .brand{display:flex;align-items:center;gap:13px;text-decoration:none}
-.brand-lockup{display:grid;grid-template-columns:auto auto;grid-template-rows:12px 24px;column-gap:5px;align-items:center;line-height:1;font-weight:900;letter-spacing:.04em}
-.brand-hash{grid-column:1/3;font-size:8px;color:var(--ink);letter-spacing:.13em}
-.brand-super{font-size:10px;color:var(--ink);background:var(--lime);padding:2px 4px;letter-spacing:.08em}
-.brand-power{font-size:22px;letter-spacing:-.035em;color:var(--purple);line-height:.9}
+.brand-logo{display:block;width:min(190px,40vw);height:auto;max-height:58px;object-fit:contain;background:#10162e;border-radius:5px;padding:4px}
 .brand-season{font-size:9px;letter-spacing:.12em;color:#8a8d99;border-left:1px solid var(--line);padding-left:13px;line-height:1.5}
 .topnav{display:flex;gap:24px;align-items:center}.topnav a{font-size:12px;text-decoration:none;color:#68718a}.topnav a:hover{color:var(--purple)}
 .topnav .course-link{background:var(--purple);color:white;border-radius:8px;padding:10px 13px;font-weight:700}.topnav .course-link:hover{background:#4526aa;color:white}
@@ -37,7 +34,7 @@ h1 em{font-style:normal;color:var(--purple)}
 .shelf-items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
 .shelf-item{min-width:0;text-align:center;font-size:9px;line-height:1.2;color:#58617c}
 .shelf-item .mini-icon{width:100%;aspect-ratio:1;display:grid;place-items:center;background:var(--card);border:1px solid #e3e0e9;border-radius:10px;margin-bottom:6px}
-.mini-icon svg{width:78%;height:78%;stroke:var(--purple);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.mini-icon{display:block;width:100%;aspect-ratio:1;background-image:url("spice-shelf-grid.jpg");background-repeat:no-repeat;background-size:400% 400%;border-radius:8px}
 .shelf-board{height:9px;border-radius:0 0 5px 5px;background:var(--purple);margin:9px -5px 0;box-shadow:0 4px 0 #d4c9ed}
 .callout{background:#ece7f5;border:1px solid #e0d9ed;border-radius:13px;padding:15px 18px;margin:20px 0 31px;display:flex;align-items:flex-start;gap:12px;color:#58617c}
 .callout strong{color:var(--ink)}.callout .spark{flex:0 0 auto;color:var(--purple);font-size:20px;line-height:1}
@@ -60,8 +57,7 @@ h2{font:500 clamp(27px,3vw,36px)/1.14 var(--serif);margin-bottom:0;letter-spacin
 .card-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .card-heading{display:flex;align-items:center;gap:13px;min-width:0}.card-copy{min-width:0}.card-copy .tag{margin-bottom:4px}
 .card h3{font:500 21px/1.12 var(--serif);margin:3px 0 3px;letter-spacing:-.015em}
-.product-icon{width:62px;height:62px;flex:0 0 62px;display:grid;place-items:center;border-radius:12px;background:#eee9f7;border:1px solid #e0d9ed}
-.product-icon svg{width:46px;height:46px;stroke:var(--purple);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.product-icon{width:84px;height:84px;flex:0 0 84px;display:block;border-radius:10px;background-color:#eee9f7;background-image:url("spice-shelf-grid.jpg");background-repeat:no-repeat;background-size:400% 400%;border:1px solid #e0d9ed}
 .product-icon .accent{stroke:var(--purple);fill:var(--lime)}
 .tag{display:inline-block;border-radius:30px;background:#eeebf5;color:#5b36cd;padding:4px 9px;font-size:9px;line-height:1.25}
 .number{font:italic 14px var(--serif);color:#9695a3;white-space:nowrap;align-self:flex-start;margin-top:3px}
@@ -87,17 +83,17 @@ h2{font:500 clamp(27px,3vw,36px)/1.14 var(--serif);margin-bottom:0;letter-spacin
 footer{border-top:1px solid var(--line);padding:18px max(22px,calc((100vw - 1180px)/2));display:flex;justify-content:space-between;align-items:center;gap:14px;color:#747b8c;font-size:10px}
 footer a{color:var(--purple);text-decoration:none}footer .footer-course{font-weight:700}
 @media(max-width:850px){.topnav{gap:13px}.finder{grid-template-columns:1fr}.search-box{min-width:0;width:min(100%,380px)}.section-head{align-items:flex-start}.section-note{max-width:260px}}
-@media(max-width:620px){.topbar{min-height:64px;padding:8px 15px;gap:8px}.brand{gap:9px}.brand-season{font-size:8px;padding-left:8px}.topnav{gap:0}.topnav a:not(.course-link){display:none}.topnav .course-link{font-size:9px;padding:9px 10px;max-width:150px;text-align:center}
-.wrap{padding:0 15px}.hero{margin-top:14px;grid-template-columns:1fr;min-height:0}.hero-copy{padding:26px 21px 20px}h1{font-size:clamp(37px,10vw,48px);max-width:100%;margin-bottom:11px}.hero-copy>p:not(.eyebrow){font-size:13px;line-height:1.5}.eyebrow{font-size:9px;margin-bottom:8px}.market-cta{margin-top:16px;padding:11px 13px;font-size:11px}.hero-display{border-left:0;border-top:1px solid var(--line);padding:14px 16px 17px}.illustrated-shelf{padding:11px 10px 9px}.shelf-caption{font-size:14px;margin-bottom:9px}.shelf-items{gap:6px}.shelf-item{font-size:8px}.shelf-item .mini-icon{border-radius:8px;margin-bottom:4px}.mini-icon svg{width:82%;height:82%}.shelf-board{height:7px;margin-top:7px}
-.callout{margin:14px 0 25px;padding:13px 14px;font-size:12px;line-height:1.5}.section-head{display:block;margin:27px 0 12px}.section-note{max-width:100%;margin-top:8px}.finder{gap:8px}.filters{margin-right:-15px;padding-right:15px}.search-box{width:100%}.grid{grid-template-columns:1fr;gap:10px}.card{padding:13px}.card h3{font-size:19px}.product-icon{width:54px;height:54px;flex-basis:54px;border-radius:10px}.product-icon svg{width:41px;height:41px}.desc{font-size:12px}.try{font-size:11px}.market{font-size:8px;padding:7px 8px}
+@media(max-width:620px){.topbar{min-height:64px;padding:8px 15px;gap:8px}.brand{gap:8px}.brand-logo{width:min(145px,38vw);max-height:46px}.brand-season{font-size:8px;padding-left:8px}.topnav{gap:0}.topnav a:not(.course-link){display:none}.topnav .course-link{font-size:9px;padding:9px 10px;max-width:150px;text-align:center}
+.wrap{padding:0 15px}.hero{margin-top:14px;grid-template-columns:1fr;min-height:0}.hero-copy{padding:26px 21px 20px}h1{font-size:clamp(37px,10vw,48px);max-width:100%;margin-bottom:11px}.hero-copy>p:not(.eyebrow){font-size:13px;line-height:1.5}.eyebrow{font-size:9px;margin-bottom:8px}.market-cta{margin-top:16px;padding:11px 13px;font-size:11px}.hero-display{border-left:0;border-top:1px solid var(--line);padding:14px 16px 17px}.illustrated-shelf{padding:11px 10px 9px}.shelf-caption{font-size:14px;margin-bottom:9px}.shelf-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}.shelf-item{font-size:9px}.shelf-item .mini-icon{border-radius:8px;margin-bottom:5px}.shelf-item:nth-child(-n+2){border-bottom:5px solid var(--purple);padding-bottom:8px}.shelf-board{height:7px;margin-top:7px}
+.callout{margin:14px 0 25px;padding:13px 14px;font-size:12px;line-height:1.5}.section-head{display:block;margin:27px 0 12px}.section-note{max-width:100%;margin-top:8px}.finder{gap:8px}.filters{margin-right:-15px;padding-right:15px}.search-box{width:100%}.grid{grid-template-columns:1fr;gap:10px}.card{padding:13px}.card h3{font-size:19px}.product-icon{width:72px;height:72px;flex-basis:72px;border-radius:9px}.desc{font-size:12px}.try{font-size:11px}.market{font-size:8px;padding:7px 8px}
 .guide{grid-template-columns:1fr;padding:19px 17px;gap:13px}.guide h2{font-size:25px}.guide-link{justify-content:center;width:100%}.note{line-height:1.45;margin-bottom:25px}footer{padding:16px 15px;align-items:flex-start;flex-wrap:wrap}footer .footer-course{width:100%;order:-1}}
-@media(max-width:360px){.brand-lockup{grid-template-rows:10px 20px}.brand-power{font-size:19px}.brand-super{font-size:10px}.brand-season{display:none}.hero-copy{padding:23px 17px 17px}.product-icon{width:49px;height:49px;flex-basis:49px}.product-icon svg{width:37px;height:37px}.card-heading{gap:10px}.card h3{font-size:18px}.market{font-size:8px;padding:7px 6px}}
+@media(max-width:360px){.brand-logo{width:min(128px,42vw)}.brand-season{display:none}.hero-copy{padding:23px 17px 17px}.product-icon{width:60px;height:60px;flex-basis:60px}.card-heading{gap:10px}.card h3{font-size:18px}.market{font-size:8px;padding:7px 6px}}
 </style>
 </head>
 <body>
 <header class="topbar">
 <a class="brand" href="https://kseniajarikova.github.io/seasonka-winter-menu/" aria-label="Super Power — к книге рецептов">
-<span class="brand-lockup" aria-hidden="true"><span class="brand-hash">#SEKTA</span><span class="brand-super">SUPER</span><span class="brand-power">POWER</span></span>
+<img class="brand-logo" src="super-power-logo.png" alt="Soft Super Power">
 <span class="brand-season">ЗИМА 2026</span>
 </a>
 <nav class="topnav" aria-label="Основная навигация">
@@ -162,27 +158,6 @@ var products=[
 {id:"cinnamon",name:"Корица",tag:"тёплая · сладкая",desc:"Знакомый аромат, который хорошо раскрывается не только в выпечке, но и в простых завтраках.",try:"Добавь к каше, запечённым яблокам, груше или йогурту с фруктами.",cats:["sweet"],book:"Овсянка с мандарином; пшённая каша с тыквой"},
 {id:"cumin",name:"Зира (кумин)",tag:"пряная · землистая",desc:"Тёплая пряность, которая особенно хорошо сочетается с бобовыми и томатами.",try:"Добавь немного к фасоли, чечевице, томатному соусу или запечённой моркови.",cats:["hot","soup"],book:null}
 ];
-function iconSvg(id){
-var shapes={
-gochujang:'<path d="M17 38h30l-4 9H21z"/><path d="M21 34c4-6 18-6 22 0"/><path class="accent" d="M32 20c-4 5-4 9 0 12 4-3 4-7 0-12z"/><path d="M32 33v2"/>',
-soy:'<path d="M27 12h10v7l5 5v24H22V24l5-5z"/><path d="M27 19h10M23 31h18"/><path class="accent" d="M32 34c-4 5-3 8 0 9 3-1 4-4 0-9z"/>',
-salt:'<path d="m18 43 8-17 7 17zM34 43l8-22 7 22zM28 23l4-9 4 9z"/><path class="accent" d="m26 32 2-4 2 4z"/>',
-oil:'<path class="accent" d="M32 12C25 23 19 30 19 38a13 13 0 0 0 26 0c0-8-6-15-13-26z"/><path d="M27 40c1 3 3 4 6 4"/>',
-sumac:'<path d="M22 47c2-12 9-22 22-30M27 38l-8-3M32 31l-4-9M37 25l8 2"/><circle class="accent" cx="20" cy="34" r="3"/><circle class="accent" cx="29" cy="21" r="3"/><circle class="accent" cx="46" cy="27" r="3"/><circle class="accent" cx="28" cy="41" r="3"/>',
-miso:'<path d="M17 33h30c-1 10-6 15-15 15s-14-5-15-15z"/><path d="M22 29c2-5 18-5 20 0"/><path d="M25 18c-3-3 2-5 0-8M33 18c-3-3 2-5 0-8M41 18c-3-3 2-5 0-8"/><path class="accent" d="M27 37h10"/>',
-chili:'<path d="M19 21c7 1 13 6 17 13s7 10 13 10c-2 5-8 8-14 5-9-4-18-15-18-23 0-3 1-4 2-5z"/><path d="M18 22c-3-3-2-6 1-8 1 3 3 4 6 4"/><path class="accent" d="M26 27c5 2 8 6 10 10"/>',
-maple:'<path class="accent" d="m32 12 5 8 7-3-2 9 8 4-8 5 2 9-9-3-3 9-4-9-9 3 2-9-8-5 8-4-2-9 8 3z"/><path d="M32 20v27"/>',
-onion:'<path d="M32 15c-8 7-15 13-15 21a15 15 0 0 0 30 0c0-8-7-14-15-21z"/><path d="M32 23c-5 5-9 9-9 14a9 9 0 0 0 18 0c0-5-4-9-9-14z"/><path class="accent" d="M32 31c-3 3-4 5-4 7a4 4 0 0 0 8 0c0-2-1-4-4-7z"/>',
-zaatar:'<path d="M21 49c4-15 12-26 25-36M25 39l-9-5M29 31l-1-9M35 25l8 1M23 44l-8 2"/><ellipse class="accent" cx="17" cy="34" rx="4" ry="2"/><ellipse class="accent" cx="28" cy="22" rx="4" ry="2"/><ellipse class="accent" cx="44" cy="26" rx="4" ry="2"/>',
-furikake:'<path d="M15 36h34c-2 9-8 13-17 13s-15-4-17-13z"/><path d="M21 31h22"/><circle class="accent" cx="24" cy="27" r="2"/><circle class="accent" cx="32" cy="24" r="2"/><circle class="accent" cx="40" cy="28" r="2"/><path d="M25 18c3 2 4 4 4 6M39 16c-3 2-4 4-4 6"/>',
-vinegar:'<path d="M27 13h10v7l5 5v23H22V25l5-5z"/><path d="M27 20h10M24 34h16"/><circle class="accent" cx="29" cy="29" r="1.5"/><circle class="accent" cx="36" cy="30" r="1.5"/>',
-sesame:'<ellipse class="accent" cx="22" cy="25" rx="3" ry="6" transform="rotate(-35 22 25)"/><ellipse cx="34" cy="20" rx="3" ry="6" transform="rotate(28 34 20)"/><ellipse class="accent" cx="43" cy="29" rx="3" ry="6" transform="rotate(-20 43 29)"/><ellipse cx="27" cy="40" rx="3" ry="6" transform="rotate(35 27 40)"/><ellipse class="accent" cx="40" cy="44" rx="3" ry="6" transform="rotate(-32 40 44)"/>',
-paprika:'<path d="M24 19c1 7 2 12-4 18-4 5-1 14 7 14 4 0 5-3 8-3s5 3 9 3c8 0 10-9 5-15-5-6-5-11-4-17"/><path d="M32 19c0-5 3-8 8-8"/><path class="accent" d="M33 23c3 7 3 14 0 21"/>',
-cinnamon:'<path d="M19 18h8v31h-8zM36 13h8v36h-8z"/><path d="M19 22h8M36 18h8"/><path class="accent" d="M21 18c4 2 4 4 0 5M38 13c4 2 4 4 0 5"/>',
-cumin:'<ellipse class="accent" cx="21" cy="26" rx="3" ry="7" transform="rotate(-35 21 26)"/><ellipse cx="34" cy="22" rx="3" ry="7" transform="rotate(25 34 22)"/><ellipse class="accent" cx="44" cy="31" rx="3" ry="7" transform="rotate(-28 44 31)"/><ellipse cx="27" cy="42" rx="3" ry="7" transform="rotate(25 27 42)"/><ellipse class="accent" cx="40" cy="45" rx="3" ry="7" transform="rotate(-35 40 45)"/>'
-};
-return '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">'+(shapes[id]||shapes.salt)+'</svg>';
-}
 var labels={all:"Что сегодня готовишь?",salad:"Идеи к салату или боулу",soup:"Идеи к супу",hot:"Идеи к горячему",sweet:"Идеи к завтраку и сладкому"};
 var cards=document.getElementById("cards");
 var results=document.getElementById("results");
@@ -196,8 +171,8 @@ var textSearch=(p.name+" "+p.tag+" "+p.desc+" "+p.try+" "+(p.book||"")).toLowerC
 var article=make("article",{className:"card","data-tags":p.cats.join(" "),"data-search":textSearch});
 var top=make("div",{className:"card-top"});
 var left=make("div",{className:"card-heading"});
-var icon=make("div",{className:"product-icon",role:"img","aria-label":"Значок продукта: "+p.name});
-icon.innerHTML=iconSvg(p.id);left.appendChild(icon);
+var icon=make("div",{className:"product-icon",role:"img","aria-label":"Фото продукта: "+p.name});
+icon.style.backgroundPosition=((index%4)*100/3)+"% "+(Math.floor(index/4)*100/3)+"%";left.appendChild(icon);
 var copy=make("div",{className:"card-copy"});
 copy.appendChild(make("span",{className:"tag"},p.tag));
 copy.appendChild(make("h3",{},p.name));left.appendChild(copy);
@@ -227,7 +202,7 @@ var heroSpices=document.getElementById("heroSpices");
 var p=products.find(function(item){return item.id===id;});
 if(!p)return;
 var item=document.createElement("div");item.className="shelf-item";
-var icon=document.createElement("span");icon.className="mini-icon";icon.setAttribute("aria-hidden","true");icon.innerHTML=iconSvg(id);
+var icon=document.createElement("span");icon.className="mini-icon";icon.setAttribute("aria-hidden","true");var heroIndex=products.indexOf(p);icon.style.backgroundPosition=((heroIndex%4)*100/3)+"% "+(Math.floor(heroIndex/4)*100/3)+"%";
 var label=document.createElement("span");label.textContent=({"gochujang":"Гочуджан","salt":"Морская соль","sumac":"Сумах","cinnamon":"Корица"})[id];
 item.appendChild(icon);item.appendChild(label);heroSpices.appendChild(item);
 });
